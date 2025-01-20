@@ -1,8 +1,9 @@
-displayName: "Java Mod Template"
-name: "example-java-mod"
-author: "You"
-main: "example.ExampleJavaMod"
+displayName: "The Rising Sun"
+name: "trs"
+author: "[][#96F58C]obs[#4C7A5A]idi[#263A330][]an and Bloody-Ocean (Mesyachnuy/Месячный)"
+main: "trs.ExampleJavaMod"
 description: ""
-version: 1.0
+subtitle: "надеюсь в этот раз все получится.."
+version: 0.1
 minGameVersion: 146
 java: true
