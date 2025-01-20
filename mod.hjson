@@ -1,0 +1,8 @@
+displayName: "Java Mod Template"
+name: "example-java-mod"
+author: "You"
+main: "example.ExampleJavaMod"
+description: ""
+version: 1.0
+minGameVersion: 146
+java: true
