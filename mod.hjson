@@ -1,7 +1,7 @@
 displayName: "The Rising Sun"
 name: "trs"
 author: "[][#96F58C]obs[#4C7A5A]idi[#263A330][]an and Bloody-Ocean (Mesyachnuy/Месячный)"
-main: "trs.ExampleJavaMod"
+main: "trs.trsMod"
 description: ""
 subtitle: "надеюсь в этот раз все получится.."
 version: 0.1
