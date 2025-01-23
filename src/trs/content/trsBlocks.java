@@ -16,7 +16,7 @@ import static mindustry.type.ItemStack.with;
 
 public class trsBlocks {
     public static Block
-    perseverance,fortitude;
+    perseverance,fortitude,stability;
 
     public static void load(){
         perseverance = new RegenGeneratorCoreBlock("perseverance"){{
@@ -101,6 +101,60 @@ public class trsBlocks {
                     new DrawRegion("-r"){{
                             layer = 29.99f;
                         }}
+            );
+        }};
+        stability = new RegenGeneratorCoreBlock("stability"){{
+            requirements(Category.effect, with(Items.copper, 15));
+
+            size = 6;
+
+            unitType = UnitTypes.evoke;
+            health = 4500;
+            itemCapacity = 3000;
+            thrusterLength = 34/4f;
+            armor = 5f;
+            alwaysUnlocked = true;
+            incinerateNonBuildable = true;
+            requiresCoreZone = true;
+
+            buildCostMultiplier = 0.7f;
+
+            unitCapModifier = 15;
+            researchCostMultiplier = 0.07f;
+            powerProduction = 10f;
+
+
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"){{
+                        layer = 29.7f;
+                    }},
+                    new DrawRegion("-rotator1"){{
+                        spinSprite = true;
+                        rotateSpeed = 3;
+                        layer = 29.8f;
+                    }},
+                    new DrawGlowRegion("-rotator1-glow"){{
+                        rotateSpeed = 3;
+                        layer = 29.9f;
+                        color = Color.cyan;
+                        glowScale = 5f;
+                        glowIntensity = 2f;
+                    }},
+                    new DrawRegion("-rotator2"){{
+                        spinSprite = true;
+                        rotateSpeed = -3;
+                        layer = 29.8f;
+                    }},
+                    new DrawGlowRegion("-rotator2-glow"){{
+                        rotateSpeed = -3;
+                        layer = 29.9f;
+                        color = Color.cyan;
+                        glowScale = 5f;
+                        glowIntensity = 2f;
+                    }},
+                    new DrawRegion("-r"){{
+                        layer = 29.99f;
+                    }}
             );
         }};
     }
