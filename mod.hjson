@@ -6,4 +6,6 @@ description: ""
 subtitle: "надеюсь в этот раз все получится.."
 version: 0.1
 minGameVersion: 146
+repo: OBSIDAN55/The-Rising-Sun
 java: true
+hideBrowser: true
