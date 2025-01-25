@@ -3,20 +3,20 @@ package trs.content;
 import arc.graphics.Color;
 import mindustry.content.Items;
 import mindustry.content.UnitTypes;
-import mindustry.game.Teams;
 import mindustry.type.Category;
 import mindustry.world.Block;
-import mindustry.world.draw.DrawDefault;
+import mindustry.world.blocks.defense.Wall;
 import mindustry.world.draw.DrawGlowRegion;
 import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawRegion;
+import trs.type.ChemicalLightSource;
 import trs.type.RegenGeneratorCoreBlock;
 
 import static mindustry.type.ItemStack.with;
 
 public class trsBlocks {
     public static Block
-    perseverance,fortitude,stability;
+    perseverance,fortitude,stability, bariumLightSource,a,b;
 
     public static void load(){
         perseverance = new RegenGeneratorCoreBlock("perseverance"){{
@@ -157,5 +157,18 @@ public class trsBlocks {
                     }}
             );
         }};
+        bariumLightSource = new ChemicalLightSource("bariumLightSource"){{
+            requirements(Category.effect, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+            brightness = 0.75f;
+            radius = 140f;
+            sourceLightColor = Color.valueOf("96037c");
+        }};
+        a = new Wall("melter"){{
+            requirements(Category.effect, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+        }};
+        b = new Wall("crusher"){{
+            requirements(Category.effect, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+        }};
+
     }
 }

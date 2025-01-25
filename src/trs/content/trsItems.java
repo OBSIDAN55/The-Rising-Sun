@@ -4,7 +4,7 @@ import mindustry.type.Item;
 
 public class trsItems {
     public static Item
-            exacrim;
+            exacrim, tin, clinovalve, rubidium, barium, zinc, chrome, steel, biomass, carbon,carbonDust,quartz,quartzDust;
     public static void load(){
         exacrim = new Item("exacrim"){{
             hardness = 3;
