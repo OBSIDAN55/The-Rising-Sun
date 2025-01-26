@@ -1,22 +1,29 @@
 package trs.content;
 
 import arc.graphics.Color;
+import arc.struct.Seq;
 import mindustry.content.Items;
 import mindustry.content.UnitTypes;
 import mindustry.type.Category;
+import mindustry.type.ItemStack;
+import mindustry.type.Liquid;
+import mindustry.type.LiquidStack;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.Wall;
-import mindustry.world.draw.DrawGlowRegion;
-import mindustry.world.draw.DrawMulti;
-import mindustry.world.draw.DrawRegion;
+import mindustry.world.blocks.distribution.Duct;
+import mindustry.world.blocks.production.GenericCrafter;
+import mindustry.world.draw.*;
 import trs.type.ChemicalLightSource;
 import trs.type.RegenGeneratorCoreBlock;
+import trs.type.multicraft.IOEntry;
+import trs.type.multicraft.MultiCrafter;
+import trs.type.multicraft.Recipe;
 
 import static mindustry.type.ItemStack.with;
 
 public class trsBlocks {
     public static Block
-    perseverance,fortitude,stability, bariumLightSource,a,b;
+    perseverance,fortitude,stability, bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,tinDuct;
 
     public static void load(){
         perseverance = new RegenGeneratorCoreBlock("perseverance"){{
@@ -163,11 +170,87 @@ public class trsBlocks {
             radius = 140f;
             sourceLightColor = Color.valueOf("96037c");
         }};
-        a = new Wall("melter"){{
-            requirements(Category.effect, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+        rubidiumSmelter = new GenericCrafter("rubidium-smelter"){{
+            requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+            size = 2;
+
+            squareSprite = false;
+
+            outputItem = new ItemStack(trsItems.rubidium, 1);
+            craftTime = 40f;
+            hasPower = true;
+            hasLiquids = false;
+
+            consumeItems(with(trsItems.clinovalve, 2, trsItems.tin, 1));
+            consumePower(0.50f);
+
+            drawer = new DrawMulti(new DrawDefault(), new DrawFlame(Color.valueOf("ffef99")));
         }};
-        b = new Wall("crusher"){{
-            requirements(Category.effect, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+        melter = new Wall("melter"){{
+            requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+            size = 3;
+        }};
+        crusher = new MultiCrafter("crusher"){{
+            requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+            size = 3;
+            itemCapacity = 10;
+            drawer = new DrawMulti(new DrawRegion("-bottom"),new DrawLiquidTile(trsLiquids.argon), new DrawLiquidTile(trsLiquids.metan), new DrawDefault());
+            resolvedRecipes = Seq.with(
+                    new Recipe(){{
+                        input = new IOEntry() {{
+                           items = ItemStack.with(
+                                   trsItems.quartz, 1
+                           );
+                        }};
+                        output = new IOEntry(){{
+                           items = ItemStack.with(
+                                   trsItems.quartzDust, 2
+                           );
+                        }};
+                        craftTime = 1f;
+                    }},
+                    new Recipe(){{
+                    input = new IOEntry() {{
+                        items = ItemStack.with(
+                                trsItems.carbon, 1
+                        );
+                    }};
+                    output = new IOEntry(){{
+                        items = ItemStack.with(
+                                trsItems.carbonDust, 2
+                        );
+                    }};
+                    craftTime = 1f;
+                    }}
+            );
+        }};
+        atmosphericCondenser = new MultiCrafter("atmospheric-condenser"){{
+            requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+            size = 3;
+            liquidCapacity = 20f;
+                resolvedRecipes = Seq.with(
+                    new Recipe(){{
+                        input = new IOEntry() {{
+                           power = 6f;
+                        }};
+                        output = new IOEntry() {{
+                            fluids = LiquidStack.with(trsLiquids.metan, 1f);
+                        }};
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry() {{
+                            power = 8f;
+                        }};
+                        output = new IOEntry() {{
+                            fluids = LiquidStack.with(trsLiquids.argon, 1f);
+                        }};
+                    }}
+                );
+
+        }};
+        tinDuct = new Duct("tin-duct"){{
+            requirements(Category.distribution, with(Items.copper, 1));
+            speed = 4f;
         }};
 
     }
