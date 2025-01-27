@@ -35,6 +35,14 @@ public class trsItems {
             explosiveness = 0f;
             charge = 0f;
         }};
+        biomass = new Item("biomass"){{
+            hardness = 1f;
+            cost = 0,55f;
+            radioactivity = 0f;
+            explosiveness = 0.3f;
+            charge = 0f;
+            flammability = 0.85f;
+        }};
         carbon = new Item("carbon"){{
             hardness = 1;
             cost = 0.75f;
@@ -61,6 +69,13 @@ public class trsItems {
         rubidium = new Item("rubidium", Color.valueOf("AC676BFF")){{
             hardness = 2;
             cost = 1.2f;
+            radioactivity = 0f;
+            explosiveness = 0f;
+            charge = 0f;
+        }};
+        barium = new Item("barium"){{
+            hardness = 3;
+            cost = 1.7f;
             radioactivity = 0f;
             explosiveness = 0f;
             charge = 0f;
