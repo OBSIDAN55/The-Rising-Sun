@@ -37,7 +37,7 @@ public class trsItems {
         }};
         biomass = new Item("biomass"){{
             hardness = 1f;
-            cost = 0,55f;
+            cost = 0.55f;
             radioactivity = 0f;
             explosiveness = 0.3f;
             charge = 0f;
