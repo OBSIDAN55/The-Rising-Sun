@@ -23,7 +23,7 @@ import static mindustry.type.ItemStack.with;
 
 public class trsBlocks {
     public static Block
-    perseverance,fortitude,stability, bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,tinDuct;
+    perseverance,fortitude,stability, bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,tinDuct,tinJunction,tinRouter;
 
     public static void load(){
         perseverance = new RegenGeneratorCoreBlock("perseverance"){{
@@ -251,6 +251,17 @@ public class trsBlocks {
         tinDuct = new Duct("tin-duct"){{
             requirements(Category.distribution, with(Items.copper, 1));
             speed = 4f;
+        }};
+        tinRouter = new Router("tin-router"){{
+            requirements(Category.distribution, with(Items.copper, 3));
+            buildCostMultiplier = 4f;
+        }};
+        tinJunction = new Junction("tin-junction"){{
+            requirements(Category.distribution, with(Items.copper, 2));
+            speed = 35;
+            capacity = 3;
+            health = 30;
+            buildCostMultiplier = 6f;
         }};
 
     }
