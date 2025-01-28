@@ -259,10 +259,14 @@ public class trsBlocks {
         }};
         tinJunction = new Junction("tin-junction‎"){{
             requirements(Category.distribution, with(Items.copper, 2));
-            speed = 35;
+            speed = 15;
             capacity = 3;
             health = 30;
             buildCostMultiplier = 6f;
+        }};
+        tin-sorter = new Sorter("tin-sorter"){{
+            requirements(Category.distribution, with(Items.lead, 2, Items.copper, 2));
+            buildCostMultiplier = 3f;
         }};
 
     }
