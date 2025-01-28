@@ -24,7 +24,7 @@ import static mindustry.type.ItemStack.with;
 
 public class trsBlocks {
     public static Block
-    perseverance,fortitude,stability, bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,tinDuct,tinJunction,tinRouter;
+    perseverance,fortitude,stability, bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,tinDuct,tinJunction,tinRouter,tinSorter;
 
     public static void load(){
         perseverance = new RegenGeneratorCoreBlock("perseverance"){{
@@ -264,7 +264,7 @@ public class trsBlocks {
             health = 30;
             buildCostMultiplier = 6f;
         }};
-        tin-sorter = new Sorter("tin-sorter"){{
+        tinSorter = new Sorter("tin-sorter"){{
             requirements(Category.distribution, with(Items.lead, 2, Items.copper, 2));
             buildCostMultiplier = 3f;
         }};
