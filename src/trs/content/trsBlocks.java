@@ -18,6 +18,7 @@ import trs.type.RegenGeneratorCoreBlock;
 import trs.type.multicraft.IOEntry;
 import trs.type.multicraft.MultiCrafter;
 import trs.type.multicraft.Recipe;
+import mindustry.world.blocks.distribution.*;
 
 import static mindustry.type.ItemStack.with;
 
