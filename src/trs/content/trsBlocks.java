@@ -257,7 +257,7 @@ public class trsBlocks {
             requirements(Category.distribution, with(Items.copper, 3));
             buildCostMultiplier = 4f;
         }};
-        tinJunction = new Junction("tin-junction"){{
+        tinJunction = new Junction("tin-junction‎"){{
             requirements(Category.distribution, with(Items.copper, 2));
             speed = 35;
             capacity = 3;
