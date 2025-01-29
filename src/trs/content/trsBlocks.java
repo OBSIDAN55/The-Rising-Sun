@@ -268,7 +268,7 @@ public class trsBlocks {
             requirements(Category.distribution, with(Items.lead, 2, Items.copper, 2));
             buildCostMultiplier = 3f;
         }};
-        tinDuctBridge = new DuctBridge("duct-bridge"){{
+        tinDuctBridge = new DuctBridge("tin-duct-bridge"){{
             requirements(Category.distribution, with(Items.beryllium, 20));
             health = 90;
             speed = 4f;
