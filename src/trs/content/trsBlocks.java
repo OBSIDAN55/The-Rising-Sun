@@ -24,7 +24,7 @@ import static mindustry.type.ItemStack.with;
 
 public class trsBlocks {
     public static Block
-    perseverance,fortitude,stability, bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,tinDuct,tinJunction,tinRouter,tinSorter,tinInveredtSorter,tinDuctBridge,tinOverflowGate,tinUnderflowGate;
+    perseverance,fortitude,stability, bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,tinDuct,tinJunction,tinRouter,tinSorter,tinInvertedSorter,tinDuctBridge,tinOverflowGate,tinUnderflowGate;
 
     public static void load(){
         perseverance = new RegenGeneratorCoreBlock("perseverance"){{
