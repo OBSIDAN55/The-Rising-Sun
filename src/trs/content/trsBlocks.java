@@ -252,6 +252,7 @@ public class trsBlocks {
         tinDuct = new Duct("tin-duct"){{
             requirements(Category.distribution, with(Items.copper, 1));
             speed = 4f;
+            consumePower(1f/60f);
         }};
         tinRouter = new Router("tin-router"){{
             requirements(Category.distribution, with(Items.copper, 3));
