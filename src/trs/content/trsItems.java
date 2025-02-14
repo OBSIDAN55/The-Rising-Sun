@@ -59,6 +59,9 @@ public class trsItems {
             charge = 0f;
             flammability = 1.6f;
         }};
+        carbonGlass = new Item("carbon-glass"){{
+
+        }};
         zinc = new Item("zinc", Color.valueOf("456264FF")){{
             hardness = 2;
             cost = 1f;

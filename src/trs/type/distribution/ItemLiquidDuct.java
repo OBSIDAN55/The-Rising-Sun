@@ -1,9 +1,8 @@
-package trs.type;
+package trs.type.distribution;
 
 import mindustry.world.blocks.Autotiler;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.liquid.Conduit;
-import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -19,7 +18,6 @@ import mindustry.graphics.*;
 import mindustry.input.*;
 import mindustry.type.*;
 import mindustry.world.*;
-import mindustry.world.blocks.*;
 import mindustry.world.meta.*;
 
 import static mindustry.Vars.*;

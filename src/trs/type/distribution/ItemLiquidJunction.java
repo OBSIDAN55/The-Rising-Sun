@@ -1,4 +1,4 @@
-package trs.type;
+package trs.type.distribution;
 
 import arc.util.Time;
 import arc.util.io.Reads;

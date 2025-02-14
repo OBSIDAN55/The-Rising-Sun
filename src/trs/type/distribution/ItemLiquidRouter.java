@@ -1,6 +1,5 @@
-package trs.type;
+package trs.type.distribution;
 
-import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
 import arc.util.Nullable;
