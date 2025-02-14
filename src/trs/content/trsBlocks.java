@@ -181,6 +181,7 @@ public class trsBlocks {
         }};
         bariumLightSource = new ChemicalLightSource("bariumLightSource"){{
             requirements(Category.effect, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+            squareSprite = true;
             brightness = 0.75f;
             radius = 140f;
             sourceLightColor = Color.valueOf("96037c");
@@ -202,10 +203,11 @@ public class trsBlocks {
             drawer = new DrawMulti(new DrawDefault(), new DrawFlame(Color.valueOf("ffef99")));
         }};
         melter = new MultiCrafter("melter"){{
+            squareSprite = false;
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
             size = 3;
             itemCapacity = 10;
-            drawer = new DrawMulti(new DrawDefault(), new DrawGlowRegion(){{color = Pal.engine.cpy();}});
+            drawer = new DrawMulti(new DrawRegion(""){{layer = 31;}}, new DrawGlowRegion(32){{color = Pal.engine.cpy();}});
             resolvedRecipes = Seq.with(
                     new Recipe(){{
                         input = new IOEntry() {{
@@ -280,6 +282,7 @@ public class trsBlocks {
         }};
         crusher = new MultiCrafter("crusher"){{
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+            squareSprite = false;
             size = 3;
             itemCapacity = 10;
             resolvedRecipes = Seq.with(
@@ -313,6 +316,7 @@ public class trsBlocks {
         }};
         atmosphericCondenser = new MultiCrafter("atmospheric-condenser"){{
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+            squareSprite = false;
             size = 3;
             liquidCapacity = 20f;
             drawer = new DrawMulti(new DrawRegion("-bottom"),new DrawLiquidTile(trsLiquids.argon), new DrawLiquidTile(trsLiquids.metan), new DrawDefault());
