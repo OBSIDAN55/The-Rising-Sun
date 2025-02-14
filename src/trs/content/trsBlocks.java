@@ -307,6 +307,7 @@ public class trsBlocks {
             variants = 3;
         }};
         quartzSand = new Floor("quartz-sand",4){{
+            itemDrop = trsItems.quartz;
 
         }};
     }
