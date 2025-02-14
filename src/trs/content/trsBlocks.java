@@ -11,10 +11,12 @@ import mindustry.type.LiquidStack;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.distribution.Duct;
+import mindustry.world.blocks.environment.Floor;
+import mindustry.world.blocks.environment.OreBlock;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.draw.*;
-import trs.type.ChemicalLightSource;
-import trs.type.RegenGeneratorCoreBlock;
+import mindustry.world.meta.Attribute;
+import trs.type.*;
 import trs.type.multicraft.IOEntry;
 import trs.type.multicraft.MultiCrafter;
 import trs.type.multicraft.Recipe;
@@ -24,6 +26,8 @@ import static mindustry.type.ItemStack.with;
 
 public class trsBlocks {
     public static Block
+            //env
+            oreClinovalve,oreTin,quartzSand,
     perseverance,fortitude,stability, bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,tinDuct,tinJunction,tinRouter,tinSorter,tinInvertedSorter,tinDuctBridge,tinOverflowGate,tinUnderflowGate;
 
     public static void load(){
@@ -195,7 +199,6 @@ public class trsBlocks {
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
             size = 3;
             itemCapacity = 10;
-            drawer = new DrawMulti(new DrawRegion("-bottom"),new DrawLiquidTile(trsLiquids.argon), new DrawLiquidTile(trsLiquids.metan), new DrawDefault());
             resolvedRecipes = Seq.with(
                     new Recipe(){{
                         input = new IOEntry() {{
@@ -229,6 +232,7 @@ public class trsBlocks {
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
             size = 3;
             liquidCapacity = 20f;
+            drawer = new DrawMulti(new DrawRegion("-bottom"),new DrawLiquidTile(trsLiquids.argon), new DrawLiquidTile(trsLiquids.metan), new DrawDefault());
                 resolvedRecipes = Seq.with(
                     new Recipe(){{
                         input = new IOEntry() {{
@@ -249,18 +253,20 @@ public class trsBlocks {
                 );
 
         }};
-        tinDuct = new Duct("tin-duct"){{
+        tinDuct = new ItemLiquidDuct("tin-duct"){{
             requirements(Category.distribution, with(Items.copper, 1));
             speed = 4f;
-            consumePower(1f/60f);
+            liquidCapacity = 10f;
+            leaks = false;
+
         }};
-        tinRouter = new Router("tin-router"){{
+        tinRouter = new ItemLiquidRouter("tin-router"){{
             requirements(Category.distribution, with(Items.copper, 3));
             buildCostMultiplier = 4f;
         }};
-        tinJunction = new Junction("tin-junction‎"){{
+        tinJunction = new ItemLiquidJunction("tin-junction"){{
             requirements(Category.distribution, with(Items.copper, 2));
-            speed = 15;
+            speed = 10;
             capacity = 3;
             health = 30;
             buildCostMultiplier = 6f;
@@ -290,6 +296,18 @@ public class trsBlocks {
             requirements(Category.distribution, with(Items.lead, 2, Items.copper, 4));
             buildCostMultiplier = 3f;
             invert = true;
+        }};
+        //env
+        oreClinovalve = new OreBlock("ore-clinovalve",trsItems.clinovalve){{
+            oreDefault = true;
+            variants = 3;
+        }};
+        oreTin = new OreBlock("ore-tin",trsItems.tin){{
+            oreDefault = true;
+            variants = 3;
+        }};
+        quartzSand = new Floor("quartz-sand",4){{
+
         }};
     }
 }
