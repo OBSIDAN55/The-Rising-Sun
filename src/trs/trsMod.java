@@ -10,6 +10,7 @@ public class trsMod extends Mod {
         trsItems.load();
         trsWeathers.load();
         trsBlocks.load();
+        trsUnits.load();
         Planets.load();
     }
 }

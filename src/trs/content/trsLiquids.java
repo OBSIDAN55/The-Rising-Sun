@@ -5,7 +5,7 @@ import mindustry.type.Liquid;
 
 public class trsLiquids {
     public static Liquid
-    metan,argon;
+    metan,argon,crystalWater,tritium,deuterium;
 
     public static void load(){
         metan = new Liquid("metan",Color.valueOf("62392CFF")){{
@@ -19,6 +19,9 @@ public class trsLiquids {
             barColor = Color.valueOf("ffffffff");
             explosiveness = 0.4f;
             flammability = 0.65f;
+        }};
+        crystalWater = new Liquid("crystal-water"){{
+
         }};
     }
 }

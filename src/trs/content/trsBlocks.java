@@ -2,8 +2,11 @@ package trs.content;
 
 import arc.graphics.Color;
 import arc.struct.Seq;
+import mindustry.content.Fx;
 import mindustry.content.Items;
+import mindustry.content.Liquids;
 import mindustry.content.UnitTypes;
+import mindustry.entities.effect.MultiEffect;
 import mindustry.graphics.Pal;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
@@ -12,16 +15,15 @@ import mindustry.world.Block;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.OreBlock;
+import mindustry.world.blocks.production.Drill;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.draw.*;
+import mindustry.world.meta.Env;
 import trs.type.*;
-import trs.type.distribution.ItemLiquidDuct;
-import trs.type.distribution.ItemLiquidJunction;
-import trs.type.distribution.ItemLiquidRouter;
+import trs.type.distribution.*;
 import trs.type.multicraft.IOEntry;
 import trs.type.multicraft.MultiCrafter;
 import trs.type.multicraft.Recipe;
-import mindustry.world.blocks.distribution.*;
 
 import static mindustry.type.ItemStack.with;
 
@@ -29,18 +31,31 @@ public class trsBlocks {
     public static Block
             //env
             oreClinovalve,oreTin,quartzSand,darkSlate,
+    //cores
             Case,incedent,Signal,
-            perseverance,fortitude,stability,
-            bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,clinovalveDuct,clinovalveJunction,
+            perseverance,fortitude,stability,a,
+    //prod
+            bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,
+    //distribution
+            clinovalveDuct,
+            clinovalveJunction,
             clinovalveRouter,
             clinovalveSorter,
             clinovalveInvertedSorter,
             clinovalveDuctBridge,
             clinovalveOverflowGate,
             clinovalveUnderflowGate,
-            clinovalveWall,clinovalveWallLarge,zincWall,zincWallLarge,steelWall,steelWallLarge,carbonWall,carbonWallLarge,exacrimWall,exacrimWallLarge;
+    //walls
+            clinovalveWall,clinovalveWallLarge,zincWall,zincWallLarge,steelWall,steelWallLarge,carbonWall,carbonWallLarge,exacrimWall,exacrimWallLarge,
+    //drills
+            hydraulicDrill,deepDrill,clusterDrill;
 
     public static void load(){
+        a = new ExplosiveCharge("a"){{
+           requirements(Category.effect, with(Items.copper,1));
+           consumeLiquid(Liquids.water, 1f);
+           rotate = true;
+        }};
         perseverance = new RegenGeneratorCoreBlock("perseverance"){{
             requirements(Category.effect, with(Items.copper, 15));
 
@@ -358,33 +373,32 @@ public class trsBlocks {
             health = 30;
             buildCostMultiplier = 6f;
         }};
-        clinovalveSorter = new Sorter("clinovalve-sorter"){{
+        clinovalveSorter = new ItemLiquidSorter("clinovalve-sorter"){{
             requirements(Category.distribution, with(Items.lead, 2, Items.copper, 2));
             buildCostMultiplier = 3f;
         }};
-        clinovalveInvertedSorter = new Sorter("clinovalve-inverted-sorter"){{
+        clinovalveInvertedSorter = new ItemLiquidSorter("clinovalve-inverted-sorter"){{
             requirements(Category.distribution, with(Items.lead, 2, Items.copper, 2));
             buildCostMultiplier = 3f;
             invert = true;
         }};
-        clinovalveDuctBridge = new DuctBridge("clinovalve-duct-bridge"){{
+        clinovalveDuctBridge = new ItemLiquidDuctBridge("clinovalve-duct-bridge"){{
             requirements(Category.distribution, with(Items.beryllium, 20));
             health = 90;
             speed = 4f;
             buildCostMultiplier = 2f;
             researchCostMultiplier = 0.3f;
         }};
-        clinovalveOverflowGate = new OverflowGate("clinovalve-overflow-gate"){{
+        clinovalveOverflowGate = new ItemLiquidOverflowGate("clinovalve-overflow-gate"){{
             requirements(Category.distribution, with(Items.lead, 2, Items.copper, 4));
             buildCostMultiplier = 3f;
         }};
 
-        clinovalveUnderflowGate = new OverflowGate("clinovalve-underflow-gate"){{
+        clinovalveUnderflowGate = new ItemLiquidOverflowGate("clinovalve-underflow-gate"){{
             requirements(Category.distribution, with(Items.lead, 2, Items.copper, 4));
             buildCostMultiplier = 3f;
             invert = true;
         }};
-        //walls
 
         //env
         oreClinovalve = new OreBlock("ore-clinovalve",trsItems.clinovalve){{
@@ -400,6 +414,46 @@ public class trsBlocks {
 
         }};
         darkSlate = new Floor("dark-slate",0);
+        //drills
+        hydraulicDrill = new Drill("hydraulic-drill"){{
+            requirements(Category.production, with(Items.lead, 2, Items.copper, 2));
+            tier = 2;
+            drillTime = 600;
+            size = 2;
+            envEnabled ^= Env.space;
+            researchCost = with(Items.copper, 10);
+
+            consumeLiquid(Liquids.water, 0.05f).boost();
+        }};
+        deepDrill = new Drill("deep-drill"){{
+            requirements(Category.production, with(Items.lead, 2, Items.copper, 2));
+            tier = 3;
+            drillTime = 400;
+            size = 2;
+            //mechanical drill doesn't work in space
+            envEnabled ^= Env.space;
+            researchCost = with(Items.copper, 10);
+
+            consumeLiquid(Liquids.water, 0.05f).boost();
+        }};
+        clusterDrill = new ClusterDrill("cluster-drill"){{
+            requirements(Category.production, with(Items.lead, 2, Items.copper, 2));
+            drillTime = 281.25f;
+            size = 3;
+            tier = 4;
+            //drawer = new DrawMulti(new DrawRegion("-bottom"),new DrawPistons(){{}},new DrawDefault());
+            drillEffect = new MultiEffect(
+                    Fx.mineImpact,
+                    Fx.drillSteam,
+                    Fx.dynamicSpikes.wrap(Liquids.hydrogen.color, 30f),
+                    Fx.mineImpactWave.wrap(Liquids.hydrogen.color, 45f)
+            );
+            fogRadius = 5;
+
+            drillMultipliers.put(Items.beryllium, 1.35f);
+        }};
+        //walls
+
         clinovalveWall = new Wall("clinovalve-wall"){{
             requirements(Category.defense, with(Items.lead, 2, Items.copper, 4));
         }};
