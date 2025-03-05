@@ -2,11 +2,10 @@ package trs.content;
 
 import arc.graphics.Color;
 import arc.struct.Seq;
-import mindustry.content.Fx;
-import mindustry.content.Items;
-import mindustry.content.Liquids;
-import mindustry.content.UnitTypes;
+import mindustry.content.*;
+import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.effect.MultiEffect;
+import mindustry.entities.pattern.ShootAlternate;
 import mindustry.graphics.Pal;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
@@ -24,6 +23,7 @@ import trs.type.distribution.*;
 import trs.type.multicraft.IOEntry;
 import trs.type.multicraft.MultiCrafter;
 import trs.type.multicraft.Recipe;
+import trs.type.turrets.TRSItemTurret;
 
 import static mindustry.type.ItemStack.with;
 
@@ -48,7 +48,9 @@ public class trsBlocks {
     //walls
             clinovalveWall,clinovalveWallLarge,zincWall,zincWallLarge,steelWall,steelWallLarge,carbonWall,carbonWallLarge,exacrimWall,exacrimWallLarge,
     //drills
-            hydraulicDrill,deepDrill,clusterDrill;
+            hydraulicDrill,deepDrill,clusterDrill,
+    //turrets
+        splash, artery;
 
     public static void load(){
         a = new ExplosiveCharge("a"){{
@@ -56,18 +58,45 @@ public class trsBlocks {
            consumeLiquid(Liquids.water, 1f);
            rotate = true;
         }};
-        perseverance = new RegenGeneratorCoreBlock("perseverance"){{
+        Case = new BuildTurretRegenGeneratorCoreBlock("case"){{
             requirements(Category.effect, with(Items.copper, 15));
+            outlineColor = Color.valueOf("00000000");
 
-            size = 4;
-
-            unitType = UnitTypes.evoke;
             health = 4500;
             itemCapacity = 2000;
             thrusterLength = 34/4f;
             armor = 5f;
             alwaysUnlocked = true;
-            incinerateNonBuildable = true;
+            requiresCoreZone = true;
+
+            buildCostMultiplier = 0.7f;
+
+            unitCapModifier = 10;
+            researchCostMultiplier = 0.07f;
+            powerProduction = 10f;
+            incinerateNonBuildable = false;
+            isFirstTier = true;
+            size = 3;
+            isRegen = false;
+            isGenerator = false;
+
+            squareSprite = false;
+
+            drawer = new DrawRegion("-r"){{
+                layer = 29.99f;
+            }};
+        }};
+        perseverance = new BuildTurretRegenGeneratorCoreBlock("perseverance"){{
+            requirements(Category.effect, with(Items.copper, 15));
+            outlineColor = Color.valueOf("00000000");
+
+            size = 4;
+
+            health = 4500;
+            itemCapacity = 2000;
+            thrusterLength = 34/4f;
+            armor = 5f;
+            alwaysUnlocked = true;
             requiresCoreZone = true;
 
             buildCostMultiplier = 0.7f;
@@ -75,6 +104,9 @@ public class trsBlocks {
             unitCapModifier = 15;
             researchCostMultiplier = 0.07f;
             powerProduction = 10f;
+            incinerateNonBuildable = false;
+            isFirstTier = true;
+            squareSprite = false;
 
 
             drawer = new DrawMulti(
@@ -98,25 +130,25 @@ public class trsBlocks {
                     }}
             );
         }};
-        fortitude = new RegenGeneratorCoreBlock("fortitude"){{
+        fortitude = new BuildTurretRegenGeneratorCoreBlock("fortitude"){{
             requirements(Category.effect, with(Items.copper, 15));
+            outlineColor = Color.valueOf("00000000");
 
             size = 5;
 
-            unitType = UnitTypes.evoke;
             health = 4500;
             itemCapacity = 3000;
             thrusterLength = 34/4f;
             armor = 5f;
             alwaysUnlocked = true;
-            incinerateNonBuildable = true;
-            requiresCoreZone = true;
+            incinerateNonBuildable = false;
 
             buildCostMultiplier = 0.7f;
 
             unitCapModifier = 15;
             researchCostMultiplier = 0.07f;
             powerProduction = 10f;
+            squareSprite = false;
 
 
             drawer = new DrawMulti(
@@ -140,25 +172,25 @@ public class trsBlocks {
                         }}
             );
         }};
-        stability = new RegenGeneratorCoreBlock("stability"){{
+        stability = new BuildTurretRegenGeneratorCoreBlock("stability"){{
             requirements(Category.effect, with(Items.copper, 15));
+            outlineColor = Color.valueOf("00000000");
 
             size = 6;
 
-            unitType = UnitTypes.evoke;
             health = 4500;
             itemCapacity = 3000;
             thrusterLength = 34/4f;
             armor = 5f;
             alwaysUnlocked = true;
-            incinerateNonBuildable = true;
-            requiresCoreZone = true;
+            incinerateNonBuildable = false;
 
             buildCostMultiplier = 0.7f;
 
             unitCapModifier = 15;
             researchCostMultiplier = 0.07f;
             powerProduction = 10f;
+            squareSprite = false;
 
 
             drawer = new DrawMulti(
@@ -489,6 +521,67 @@ public class trsBlocks {
         exacrimWallLarge = new Wall("exacrim-wall-large"){{
             requirements(Category.defense, with(Items.lead, 2, Items.copper, 4));
             size = 3;
+        }};
+
+        //turrets
+        splash = new TRSItemTurret("splash"){{
+            requirements(Category.turret, with(Items.copper,1));
+            size = 2;
+            fraction = "Chronos";
+            ammo(
+                    trsItems.clinovalve,  new BasicBulletType(2.5f, 9){{
+                        width = 7f;
+                        height = 9f;
+                        lifetime = 60f;
+                        ammoMultiplier = 2;
+                        frontColor = backColor = Color.valueOf("c52603");
+                    }},
+                    trsItems.carbonGlass, new BasicBulletType(3.5f, 12){{
+                        frontColor = backColor = Color.valueOf("c52603");
+                        width = 9f;
+                        height = 12f;
+                        reloadMultiplier =1.25f;
+                        ammoMultiplier = 4;
+                        lifetime = 60f;
+                        fragBullets = 6;
+                        fragBullet = new BasicBulletType(3f, 5){{
+                            frontColor = backColor = Color.valueOf("c52603");
+                            width = 5f;
+                            height = 12f;
+                            shrinkY = 1f;
+                            lifetime = 20f;
+                            despawnEffect = Fx.none;
+                            collidesGround = true;
+                        }};
+                    }},
+                    trsItems.carbon, new BasicBulletType(3f, 20){{
+                        frontColor = backColor = Color.valueOf("c52603");
+                        width = 7f;
+                        height = 8f;
+                        shrinkY = 0f;
+                        homingPower = 0.08f;
+                        splashDamageRadius = 20f;
+                        splashDamage = 30f * 1.5f;
+                        makeFire = true;
+                        ammoMultiplier = 5f;
+                        hitEffect = Fx.blastExplosion;
+                        status = StatusEffects.burning;
+                    }}
+            );
+            shoot = new ShootAlternate(3.5f);
+
+            recoil = 0.5f;
+            shootY = 6.5f;
+            reload = 7f;
+            range = 110;
+            shootCone = 15f;
+            ammoUseEffect = Fx.casing1;
+            health = 250;
+            inaccuracy = 2f;
+            rotateSpeed = 10f;
+            coolant = consumeCoolant(0.1f);
+
+            limitRange();
         }};
 
     }

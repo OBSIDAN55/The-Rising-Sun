@@ -195,7 +195,7 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
             Draw.z(Layer.blockUnder);
             Draw.rect(sliced(botRegions[bits], slice), x, y, rotation);
 
-            Draw.z(Layer.blockUnder +0.11f);
+            Draw.z(Layer.blockUnder +0.0001f);
             Draw.color(transparentColor);
 
             int offset = yscl == -1 ? 3 : 0;
@@ -212,7 +212,7 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
             Draw.scl(xscl, yscl);
 
             Draw.color();
-            Draw.z(Layer.block);
+            Draw.z(Layer.block-0.01f);
 
             Draw.rect(sliced(topRegions[bits], slice), x, y, rotation);
         }
