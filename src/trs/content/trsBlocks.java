@@ -35,7 +35,7 @@ public class trsBlocks {
             Case,incedent,Signal,
             perseverance,fortitude,stability,a,
     //prod
-            bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,
+            bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,carbonGlassClin,
     //distribution
             clinovalveDuct,
             clinovalveJunction,
@@ -235,19 +235,22 @@ public class trsBlocks {
         }};
         rubidiumSmelter = new GenericCrafter("rubidium-smelter"){{
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
-            size = 2;
+            size = 4;
 
             squareSprite = false;
+            itemCapacity = 15;
 
-            outputItem = new ItemStack(trsItems.rubidium, 1);
+            outputItem = new ItemStack(trsItems.rubidium, 4);
             craftTime = 40f;
             hasPower = true;
             hasLiquids = false;
 
-            consumeItems(with(trsItems.clinovalve, 2, trsItems.tin, 1));
+            consumeItems(with(trsItems.clinovalve, 6, trsItems.tin, 4));
             consumePower(0.50f);
 
-            drawer = new DrawMulti(new DrawDefault(), new DrawFlame(Color.valueOf("ffef99")));
+            drawer = new DrawMulti(new DrawDefault(), new DrawGlowRegion(){{
+                color = Color.valueOf("b17702");
+            }});
         }};
         melter = new MultiCrafter("melter"){{
             squareSprite = false;
@@ -327,11 +330,45 @@ public class trsBlocks {
                     }}
             );
         }};
+        carbonGlassClin = new GenericCrafter("carbon-glass-clin"){{
+            requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+            squareSprite = false;
+            size = 3;
+            itemCapacity = 10;
+            consumeItems(with(trsItems.carbonDust, 5, trsItems.quartzDust, 5));
+            outputItem = new ItemStack(trsItems.carbonGlass, 2);
+            consumePower(0.50f);
+
+            drawer = new DrawMulti(new DrawDefault(), new DrawGlowRegion(){{
+                color = Color.valueOf("56bff1");
+            }});
+        }};
         crusher = new MultiCrafter("crusher"){{
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
             squareSprite = false;
             size = 3;
             itemCapacity = 10;
+            drawer = new DrawMulti(new DrawRegion("-bottom"),new DrawPistons(){{
+                sides = 1;
+                angleOffset = -90f;
+                sinMag = -4f;
+                sinScl = 10f;
+                lenOffset = 0.1f;
+                sinOffset = 30f;
+
+            }},new DrawPistons(){{
+                suffix = "-piston0";
+                sides = 1;
+                angleOffset = -90f;
+                sinMag = 4f;
+                sinScl = 10f;
+                lenOffset = 0.1f;
+                sinOffset = 30f;
+            }},new DrawDefault(),new DrawGlowRegion(){{
+                color = trsItems.quartzDust.color;
+                glowIntensity = 0.35f;
+                glowScale = 10.5f;
+            }});
             resolvedRecipes = Seq.with(
                     new Recipe(){{
                         input = new IOEntry() {{
