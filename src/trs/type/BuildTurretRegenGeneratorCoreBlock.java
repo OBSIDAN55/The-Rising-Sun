@@ -399,13 +399,19 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
             if(efficiency > 0){
                 unit.drawBuilding();
             }
+            circles(x,y,buildRange, Pal.accent.a(0.25f));
+            circles(x,y,range(), Pal.heal.a(0.25f));
+        }
+        public void circles(float x, float y, float rad, Color color){
+            Lines.stroke(4f, color);
+            Lines.circle(x, y, rad);
+            Draw.reset();
         }
 
         @Override
         public void write(Writes write){
             super.write(write);
             write.f(rotation);
-            //TODO queue can be very large due to logic?
             TypeIO.writePlans(write, unit.plans().toArray(BuildPlan.class));
         }
 
@@ -485,7 +491,7 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
 
         @Override
         public float range(){
-            return range;
+            return range*2;
         }
 
 

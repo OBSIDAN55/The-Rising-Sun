@@ -3,17 +3,22 @@ package trs.content;
 import arc.graphics.Color;
 import arc.struct.Seq;
 import mindustry.content.*;
+import mindustry.entities.Effect;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.effect.MultiEffect;
+import mindustry.entities.effect.ParticleEffect;
 import mindustry.entities.pattern.ShootAlternate;
 import mindustry.graphics.Pal;
 import mindustry.type.Category;
+import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.OreBlock;
+import mindustry.world.blocks.power.ConsumeGenerator;
+import mindustry.world.blocks.power.PowerGenerator;
 import mindustry.world.blocks.production.Drill;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.draw.*;
@@ -35,7 +40,7 @@ public class trsBlocks {
             Case,incedent,Signal,
             perseverance,fortitude,stability,a,
     //prod
-            bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,carbonGlassClin,
+            bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,carbonGlassClin,test,
     //distribution
             clinovalveDuct,
             clinovalveJunction,
@@ -50,9 +55,19 @@ public class trsBlocks {
     //drills
             hydraulicDrill,deepDrill,clusterDrill,
     //turrets
-        splash, artery;
+        splash, artery,
+    //power
+        carbonBiomassReactor;
 
     public static void load(){
+
+        test = new OverclockGenericCrafter("test"){{
+            requirements(Category.crafting, with(Items.copper,1));
+            consumeItem(Items.copper, 2);
+            consumeItem(Items.thorium, 0).optional(true,false);
+            baseCraftTime = 60f;
+            outputItem = new ItemStack(Items.lead, 2);
+        }};
         a = new ExplosiveCharge("a"){{
            requirements(Category.effect, with(Items.copper,1));
            consumeLiquid(Liquids.water, 1f);
@@ -619,6 +634,23 @@ public class trsBlocks {
             coolant = consumeCoolant(0.1f);
 
             limitRange();
+        }};
+        //power
+        carbonBiomassReactor = new ConsumeGenerator("carbon-biomass-reactor"){{
+            requirements(Category.turret, with(Items.copper,1));
+            size = 5;
+
+            powerProduction = 100f;
+            itemDuration = 90f;
+            consumeLiquid(trsLiquids.crystalWater, 0.1f);
+            hasLiquids = true;
+            consumeItems(with(trsItems.carbon, 2, trsItems.biomass,2));
+            drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidRegion(trsLiquids.crystalWater),new DrawCultivator(){{
+                radius = 2f;
+                bubbles = 40;
+                sides  =10;
+                spread = 10f;
+            }},new DrawDefault());
         }};
 
     }

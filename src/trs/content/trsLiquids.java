@@ -20,7 +20,7 @@ public class trsLiquids {
             explosiveness = 0.4f;
             flammability = 0.65f;
         }};
-        crystalWater = new Liquid("crystal-water"){{
+        crystalWater = new Liquid("crystal-water",Color.valueOf("A2B7E2FF")){{
 
         }};
     }
