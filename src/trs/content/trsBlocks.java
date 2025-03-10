@@ -24,6 +24,7 @@ import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.draw.*;
 import mindustry.world.meta.Env;
 import trs.type.*;
+import trs.type.Draw.RandomDrawGlowRegion;
 import trs.type.distribution.*;
 import trs.type.multicraft.IOEntry;
 import trs.type.multicraft.MultiCrafter;
@@ -40,7 +41,7 @@ public class trsBlocks {
             Case,incedent,Signal,
             perseverance,fortitude,stability,a,
     //prod
-            bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,carbonGlassClin,test,
+            bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,carbonGlassClin,test,brazier,
     //distribution
             clinovalveDuct,
             clinovalveJunction,
@@ -133,7 +134,7 @@ public class trsBlocks {
                         rotateSpeed = 3;
                         layer = 29.8f;
                     }},
-                    new DrawGlowRegion("-rotator-glow"){{
+                    new RandomDrawGlowRegion("-rotator-glow"){{
                         rotateSpeed = 3;
                         layer = 29.9f;
                         color = Color.cyan;
@@ -175,7 +176,7 @@ public class trsBlocks {
                         rotateSpeed = 3;
                         layer = 29.8f;
                     }},
-                    new DrawGlowRegion("-rotator-glow"){{
+                    new RandomDrawGlowRegion("-rotator-glow"){{
                         rotateSpeed = 3;
                         layer = 29.9f;
                         color = Color.cyan;
@@ -217,7 +218,7 @@ public class trsBlocks {
                         rotateSpeed = 3;
                         layer = 29.8f;
                     }},
-                    new DrawGlowRegion("-rotator1-glow"){{
+                    new RandomDrawGlowRegion("-rotator1-glow"){{
                         rotateSpeed = 3;
                         layer = 29.9f;
                         color = Color.cyan;
@@ -229,7 +230,7 @@ public class trsBlocks {
                         rotateSpeed = -3;
                         layer = 29.8f;
                     }},
-                    new DrawGlowRegion("-rotator2-glow"){{
+                    new RandomDrawGlowRegion("-rotator2-glow"){{
                         rotateSpeed = -3;
                         layer = 29.9f;
                         color = Color.cyan;
@@ -263,7 +264,7 @@ public class trsBlocks {
             consumeItems(with(trsItems.clinovalve, 6, trsItems.tin, 4));
             consumePower(0.50f);
 
-            drawer = new DrawMulti(new DrawDefault(), new DrawGlowRegion(){{
+            drawer = new DrawMulti(new DrawDefault(), new RandomDrawGlowRegion(){{
                 color = Color.valueOf("b17702");
             }});
         }};
@@ -272,7 +273,7 @@ public class trsBlocks {
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
             size = 3;
             itemCapacity = 10;
-            drawer = new DrawMulti(new DrawRegion(""){{layer = 31;}}, new DrawGlowRegion(32){{color = Pal.engine.cpy();}});
+            drawer = new DrawMulti(new DrawRegion(""){{layer = 31;}}, new RandomDrawGlowRegion(32){{color = Pal.engine.cpy();}});
             resolvedRecipes = Seq.with(
                     new Recipe(){{
                         input = new IOEntry() {{
@@ -345,6 +346,15 @@ public class trsBlocks {
                     }}
             );
         }};
+        brazier = new GenericCrafter("brazier"){{
+            requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+            size = 3;
+            itemCapacity = 10;
+            consumeItem(trsItems.biomass,4);
+            outputItem = new ItemStack(trsItems.carbon, 3);
+            consumePower(240f/60f);
+            drawer = new DrawMulti(new DrawDefault(),new RandomDrawGlowRegion(){{color = Color.valueOf("8c583e");}});
+        }};
         carbonGlassClin = new GenericCrafter("carbon-glass-clin"){{
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
             squareSprite = false;
@@ -354,7 +364,7 @@ public class trsBlocks {
             outputItem = new ItemStack(trsItems.carbonGlass, 2);
             consumePower(0.50f);
 
-            drawer = new DrawMulti(new DrawDefault(), new DrawGlowRegion(){{
+            drawer = new DrawMulti(new DrawDefault(), new RandomDrawGlowRegion(){{
                 color = Color.valueOf("56bff1");
             }});
         }};
