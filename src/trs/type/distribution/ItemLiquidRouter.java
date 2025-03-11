@@ -13,6 +13,7 @@ import mindustry.gen.Building;
 import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
+import mindustry.graphics.MultiPacker;
 import mindustry.type.Item;
 import mindustry.world.Tile;
 import mindustry.world.blocks.ControlBlock;
@@ -40,6 +41,12 @@ public class ItemLiquidRouter extends LiquidRouter {
         unloadable = false;
         noUpdateDisabled = true;
     }
+
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{Core.atlas.find(name+"-icon")};
+    }
+
     @Override
     public void load(){
         super.load();

@@ -47,7 +47,10 @@ public class ItemLiquidJunction extends LiquidJunction {
         borderRegion = Core.atlas.find(name+"-border");
         liquidRegion = Core.atlas.find(name+"-liquid");
     }
-
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{Core.atlas.find(name+"-icon")};
+    }
     @Override
     public boolean outputsItems(){
         return true;

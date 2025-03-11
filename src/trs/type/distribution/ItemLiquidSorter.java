@@ -43,6 +43,10 @@ public class ItemLiquidSorter extends Sorter {
         cross = Core.atlas.find(name+"-cross");
         liquidRegion = Core.atlas.find(name+"-liquid");
     }
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{Core.atlas.find(name+"-icon")};
+    }
 
     public class ItemLiquidSorterBuild extends SorterBuild {
 

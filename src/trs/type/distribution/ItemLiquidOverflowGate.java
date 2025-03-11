@@ -34,7 +34,7 @@ public class ItemLiquidOverflowGate extends OverflowGate {
     }
     @Override
     public TextureRegion[] icons(){
-        return new TextureRegion[]{region};
+        return new TextureRegion[]{Core.atlas.find(name+"-icon")};
     }
     @Override
     public void load(){
