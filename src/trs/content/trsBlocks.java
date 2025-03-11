@@ -459,6 +459,7 @@ public class trsBlocks {
         clinovalveRouter = new ItemLiquidRouter("clinovalve-router"){{
             requirements(Category.distribution, with(Items.copper, 3));
             buildCostMultiplier = 4f;
+            liquidCapacity = 10f;
         }};
         clinovalveJunction = new ItemLiquidJunction("clinovalve-junction"){{
             requirements(Category.distribution, with(Items.copper, 2));
@@ -470,11 +471,13 @@ public class trsBlocks {
         clinovalveSorter = new ItemLiquidSorter("clinovalve-sorter"){{
             requirements(Category.distribution, with(Items.lead, 2, Items.copper, 2));
             buildCostMultiplier = 3f;
+            liquidCapacity = 10f;
         }};
         clinovalveInvertedSorter = new ItemLiquidSorter("clinovalve-inverted-sorter"){{
             requirements(Category.distribution, with(Items.lead, 2, Items.copper, 2));
             buildCostMultiplier = 3f;
             invert = true;
+            liquidCapacity = 10f;
         }};
         clinovalveDuctBridge = new ItemLiquidDuctBridge("clinovalve-duct-bridge"){{
             requirements(Category.distribution, with(Items.beryllium, 20));
@@ -486,12 +489,14 @@ public class trsBlocks {
         clinovalveOverflowGate = new ItemLiquidOverflowGate("clinovalve-overflow-gate"){{
             requirements(Category.distribution, with(Items.lead, 2, Items.copper, 4));
             buildCostMultiplier = 3f;
+            liquidCapacity = 10f;
         }};
 
         clinovalveUnderflowGate = new ItemLiquidOverflowGate("clinovalve-underflow-gate"){{
             requirements(Category.distribution, with(Items.lead, 2, Items.copper, 4));
             buildCostMultiplier = 3f;
             invert = true;
+            liquidCapacity = 10f;
         }};
 
         //env

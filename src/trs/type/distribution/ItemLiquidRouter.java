@@ -1,6 +1,8 @@
 package trs.type.distribution;
 
+import arc.Core;
 import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Nullable;
 import arc.util.Tmp;
@@ -21,6 +23,12 @@ import mindustry.world.meta.BlockGroup;
 public class ItemLiquidRouter extends LiquidRouter {
     public float speed = 8f;
 
+    public TextureRegion bottomRegion;
+    public TextureRegion bottomCenterRegion;
+    public TextureRegion borderRegion;
+    public TextureRegion liquidRegion;
+    public TextureRegion liquidCenterRegion;
+
     public ItemLiquidRouter(String name) {
         super(name);
         solid = false;
@@ -32,6 +40,16 @@ public class ItemLiquidRouter extends LiquidRouter {
         unloadable = false;
         noUpdateDisabled = true;
     }
+    @Override
+    public void load(){
+        super.load();
+        bottomCenterRegion = Core.atlas.find(name+"-bottom-center");
+        bottomRegion = Core.atlas.find(name+"-bottom");
+        borderRegion = Core.atlas.find(name+"-border");
+        liquidRegion = Core.atlas.find(name+"-liquid");
+        liquidCenterRegion = Core.atlas.find(name+"-liquid-center");
+    }
+
     public class ItemLiquidRouterBuild extends LiquidRouterBuild implements ControlBlock {
         public Item lastItem;
         public Tile lastInput;
@@ -78,13 +96,31 @@ public class ItemLiquidRouter extends LiquidRouter {
         }
         @Override
         public void draw(){
-            Draw.rect(bottomRegion, x, y);
-
-            if(liquids.currentAmount() > 0.001f){
-                Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f));
+            Building l = left(), r = right(), f = front(), b = back();
+            Draw.rect(bottomCenterRegion, x, y);
+            if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidCenterRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f));
+            if (l != null){
+                Draw.rect(bottomRegion, x, y, rotation+90);
+                if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f),rotation+90);
+                Draw.rect(borderRegion,x,y,rotation+90);
             }
+            if (r != null){
+                Draw.rect(bottomRegion, x, y, rotation-90);
+                if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f),rotation-90);
+                Draw.rect(borderRegion,x,y,rotation-90);
+            }
+            if (f != null){
+                Draw.rect(bottomRegion, x, y, rotation);
+                if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f),rotation);
+                Draw.rect(borderRegion,x,y, rotation);
+            }
+            if (b != null){
+                Draw.rect(bottomRegion, x, y, rotation-180);
+                if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f),rotation-180);
+                Draw.rect(borderRegion,x,y,rotation-180);
 
-            Draw.rect(region, x, y);
+            }
+            Draw.rect(region,x,y);
         }
 
         @Override
