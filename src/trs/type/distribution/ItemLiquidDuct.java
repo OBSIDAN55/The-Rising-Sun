@@ -1,5 +1,6 @@
 package trs.type.distribution;
 
+import arc.Core;
 import mindustry.world.blocks.Autotiler;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.liquid.Conduit;
@@ -32,6 +33,7 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
     public Color transparentColor = new Color(0.4f, 0.4f, 0.4f, 0.1f);
 
     public TextureRegion liquidr;
+    public TextureRegion borderRegion;
 
     public @Nullable Block bridgeReplacement;
 
@@ -57,6 +59,7 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
         super.load();
 
         liquidr = liquidRegion;
+        borderRegion = Core.atlas.find(name+"-border");
         rotateRegions = new TextureRegion[4][2][animationFrames];
 
         if(renderer != null){
@@ -159,6 +162,7 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
 
         @Override
         public void draw(){
+            Building l = left(), ri = right(), f = front(), b = back();
             float rotation = rotdeg();
             int r = this.rotation;
 
@@ -183,6 +187,8 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
 
             Draw.scl(xscl, yscl);
             drawAt(x, y, blendbits, rotation, SliceMode.none);
+            if (f==null) Draw.rect(borderRegion,x,y,rotdeg());
+            if (b==null && l == null && ri == null) Draw.rect(borderRegion,x,y,rotdeg()-180);
             Draw.reset();
         }
 
@@ -218,26 +224,26 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
         }
 
         @Override
-        public void updateTile(){
+        public void updateTile() {
             smoothLiquid = Mathf.lerpDelta(smoothLiquid, liquids.currentAmount() / liquidCapacity, 0.05f);
             progress += edelta() / speed * 2f;
-            if(liquids.currentAmount() > 0.0001f && timer(timerFlow, 1)){
+            if (liquids.currentAmount() > 0.0001f && timer(timerFlow, 1)) {
                 moveLiquidForward(leaks, liquids.current());
-
-                if(current != null && next != null){
-                    if(progress >= (1f - 1f/speed) && moveForward(current)){
-                        items.remove(current, 1);
-                        current = null;
-                        progress %= (1f - 1f/speed);
-                    }
-                }else{
-                    progress = 0;
-                }
             }
-            if(current == null && items.total() > 0){
+            if (current != null && next != null) {
+                if (progress >= (1f - 1f / speed) && moveForward(current)) {
+                    items.remove(current, 1);
+                    current = null;
+                    progress %= (1f - 1f / speed);
+                }
+            } else {
+                progress = 0;
+            }
+            if (current == null && items.total() > 0) {
                 current = items.first();
             }
         }
+
 
         @Override
         public boolean acceptItem(Building source, Item item){
