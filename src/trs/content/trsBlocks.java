@@ -39,7 +39,7 @@ public class trsBlocks {
             oreClinovalve,oreTin,quartzSand,darkSlate,
     //cores
             Case,incedent,Signal,
-            perseverance,fortitude,stability,a,
+            perseverance,fortitude,stability,a,b,
     //prod
             bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,carbonGlassClin,test,brazier,
     //distribution
@@ -61,6 +61,11 @@ public class trsBlocks {
         carbonBiomassReactor;
 
     public static void load(){
+        b = new ItemLiquidContainer("b"){{
+            requirements(Category.effect, with(Items.copper,1));
+            liquidCapacity = 100f;
+            itemCapacity = 100;
+        }};
 
         test = new OverclockGenericCrafter("test"){{
             requirements(Category.crafting, with(Items.copper,1));
@@ -68,6 +73,8 @@ public class trsBlocks {
             consumeItem(Items.thorium, 0).optional(true,false);
             baseCraftTime = 60f;
             outputItem = new ItemStack(Items.lead, 2);
+            consumePower(1f);
+            consumePowerPhase(1f);
         }};
         a = new ExplosiveCharge("a"){{
            requirements(Category.effect, with(Items.copper,1));

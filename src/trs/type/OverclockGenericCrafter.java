@@ -2,13 +2,19 @@ package trs.type;
 
 import arc.Core;
 import arc.math.Mathf;
+import arc.util.Nullable;
 import arc.util.Time;
 import mindustry.content.Items;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
 import mindustry.world.blocks.production.GenericCrafter;
+import mindustry.world.consumers.Consume;
+import mindustry.world.consumers.ConsumePower;
+import trs.type.consumers.ConsumePowerPhase;
 
 public class OverclockGenericCrafter extends GenericCrafter {
+
+    public @Nullable ConsumePowerPhase consPowerPhase;
 
     public float updateEffectSpread = 4f;
     public float speedBoost = 5.5f;
@@ -24,6 +30,25 @@ public class OverclockGenericCrafter extends GenericCrafter {
         super.setBars();
         addBar("boost", (OverclockGenericCrafterBuild entity) -> new Bar(() -> Core.bundle.format("bar.boost", Mathf.round(Math.max((entity.realBoost() * 100 - 100), 0))), () -> Pal.accent, () -> entity.realBoost() / (true ? speedBoost + speedBoostPhase : speedBoost)));
     }
+
+    public void consumePowerPhase(float powerPerTick){
+        consume(new ConsumePowerPhase(powerPerTick, 0.0f, false));
+    }
+    public <T extends Consume> T consume(T consume){
+        if(consume instanceof ConsumePower){
+            //there can only be one power consumer
+            consumeBuilder.removeAll(b -> b instanceof ConsumePower);
+            consPower = (ConsumePower)consume;
+        }
+        if(consume instanceof ConsumePowerPhase){
+            //there can only be one power consumer
+            consumeBuilder.removeAll(b -> b instanceof ConsumePowerPhase);
+            consPowerPhase = (ConsumePowerPhase)consume;
+        }
+        consumeBuilder.add(consume);
+        return consume;
+    }
+
     public class OverclockGenericCrafterBuild extends GenericCrafterBuild {
         public float phaseHeat;
         public float craftTime = baseCraftTime;

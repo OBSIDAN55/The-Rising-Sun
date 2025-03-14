@@ -19,6 +19,7 @@ public class Vars {
     public static Stat fractionDescription;
     public static Stat healRadius;
     public static Stat buildRadius;
+    public static Stat powerUsePhase;
 
     public static void load() {
         ChronosName = Core.bundle.get("ChronosName");
@@ -35,6 +36,7 @@ public class Vars {
         fractionDescription = new Stat("fractiondescription",StatCat.general);
         healRadius = new Stat("healradius", StatCat.function);
         buildRadius = new Stat("buildradius",StatCat.function);
+        powerUsePhase = new Stat("powerusephase",StatCat.power);
     }
 
 }
