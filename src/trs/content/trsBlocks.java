@@ -3,22 +3,19 @@ package trs.content;
 import arc.graphics.Color;
 import arc.struct.Seq;
 import mindustry.content.*;
-import mindustry.entities.Effect;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.effect.MultiEffect;
-import mindustry.entities.effect.ParticleEffect;
 import mindustry.entities.pattern.ShootAlternate;
 import mindustry.graphics.Pal;
 import mindustry.type.Category;
-import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.OreBlock;
+import mindustry.world.blocks.environment.StaticWall;
 import mindustry.world.blocks.power.ConsumeGenerator;
-import mindustry.world.blocks.power.PowerGenerator;
 import mindustry.world.blocks.production.Drill;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.draw.*;
@@ -36,7 +33,7 @@ import static mindustry.type.ItemStack.with;
 public class trsBlocks {
     public static Block
             //env
-            oreClinovalve,oreTin,quartzSand,darkSlate,
+            oreClinovalve,oreTin,quartzSand,darkSlate,steelOre,
     //cores
             Case,incedent,Signal,
             perseverance,fortitude,stability,a,b,
@@ -520,6 +517,7 @@ public class trsBlocks {
 
         }};
         darkSlate = new Floor("dark-slate",0);
+        steelOre = new StaticWall("steel-ore");
         //drills
         hydraulicDrill = new Drill("hydraulic-drill"){{
             requirements(Category.production, with(Items.lead, 2, Items.copper, 2));
@@ -600,8 +598,11 @@ public class trsBlocks {
         //turrets
         splash = new TRSItemTurret("splash"){{
             requirements(Category.turret, with(Items.copper,1));
+            isHeating = true;
+            heating = 0.5f;
             size = 2;
             fraction = "Chronos";
+            heatDamage = 1f;
             ammo(
                     trsItems.clinovalve,  new BasicBulletType(2.5f, 9){{
                         width = 7f;

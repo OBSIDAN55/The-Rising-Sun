@@ -19,6 +19,8 @@ public class Vars {
     public static Stat fractionDescription;
     public static Stat healRadius;
     public static Stat buildRadius;
+    public static Stat heatRange;
+    public static Stat heatDamage;
     public static Stat powerUsePhase;
 
     public static void load() {
@@ -36,6 +38,8 @@ public class Vars {
         fractionDescription = new Stat("fractiondescription",StatCat.general);
         healRadius = new Stat("healradius", StatCat.function);
         buildRadius = new Stat("buildradius",StatCat.function);
+        heatRange = new Stat("heatrange", StatCat.function);
+        heatDamage = new Stat("heatdamage",StatCat.function);
         powerUsePhase = new Stat("powerusephase",StatCat.power);
     }
 
