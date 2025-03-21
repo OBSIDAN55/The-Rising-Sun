@@ -107,24 +107,24 @@ public class ItemLiquidRouter extends LiquidRouter {
             Draw.rect(bottomCenterRegion, x, y);
             if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidCenterRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f));
             if (l != null){
-                Draw.rect(bottomRegion, x, y, rotation+90);
-                if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f),rotation+90);
-                Draw.rect(borderRegion,x,y,rotation+90);
+                Draw.rect(bottomRegion, x, y, rotdeg()+90);
+                if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f),rotdeg()+90);
+                Draw.rect(borderRegion,x,y,rotdeg()+90);
             }
             if (r != null){
-                Draw.rect(bottomRegion, x, y, rotation-90);
-                if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f),rotation-90);
-                Draw.rect(borderRegion,x,y,rotation-90);
+                Draw.rect(bottomRegion, x, y, rotdeg()-90);
+                if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f),rotdeg()-90);
+                Draw.rect(borderRegion,x,y,rotdeg()-90);
             }
             if (f != null){
-                Draw.rect(bottomRegion, x, y, rotation);
-                if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f),rotation);
-                Draw.rect(borderRegion,x,y, rotation);
+                Draw.rect(bottomRegion, x, y, rotdeg());
+                if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f),rotdeg());
+                Draw.rect(borderRegion,x,y, rotdeg());
             }
             if (b != null){
-                Draw.rect(bottomRegion, x, y, rotation-180);
-                if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f),rotation-180);
-                Draw.rect(borderRegion,x,y,rotation-180);
+                Draw.rect(bottomRegion, x, y, rotdeg()-180);
+                if(liquids.currentAmount() > 0.001f) Drawf.liquid(liquidRegion,x, y, liquids.currentAmount(), liquids.current().color.write(Tmp.c1).a(1f),rotdeg()-180);
+                Draw.rect(borderRegion,x,y,rotdeg()-180);
 
             }
             Draw.rect(region,x,y);

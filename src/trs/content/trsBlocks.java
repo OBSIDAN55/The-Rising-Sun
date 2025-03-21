@@ -22,11 +22,12 @@ import mindustry.world.draw.*;
 import mindustry.world.meta.Env;
 import trs.type.*;
 import trs.type.Draw.RandomDrawGlowRegion;
+import trs.type.defense.turrets.CountForceProjector;
 import trs.type.distribution.*;
 import trs.type.multicraft.IOEntry;
 import trs.type.multicraft.MultiCrafter;
 import trs.type.multicraft.Recipe;
-import trs.type.turrets.TRSItemTurret;
+import trs.type.defense.turrets.TRSItemTurret;
 
 import static mindustry.type.ItemStack.with;
 
@@ -36,7 +37,7 @@ public class trsBlocks {
             oreClinovalve,oreTin,quartzSand,darkSlate,steelOre,
     //cores
             Case,incedent,Signal,
-            perseverance,fortitude,stability,a,b,
+            perseverance,fortitude,stability,a,b,c,
     //prod
             bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,carbonGlassClin,test,brazier,
     //distribution
@@ -58,6 +59,11 @@ public class trsBlocks {
         carbonBiomassReactor;
 
     public static void load(){
+        c = new CountForceProjector("shield"){{
+            requirements(Category.effect, with(Items.copper,1));
+            size = 3;
+            sides = 40;
+        }};
         b = new ItemLiquidContainer("b"){{
             requirements(Category.effect, with(Items.copper,1));
             liquidCapacity = 100f;

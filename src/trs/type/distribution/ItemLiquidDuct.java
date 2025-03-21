@@ -3,7 +3,6 @@ package trs.type.distribution;
 import arc.Core;
 import mindustry.world.blocks.Autotiler;
 import mindustry.world.blocks.distribution.*;
-import mindustry.world.blocks.liquid.Conduit;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -19,6 +18,7 @@ import mindustry.graphics.*;
 import mindustry.input.*;
 import mindustry.type.*;
 import mindustry.world.*;
+import mindustry.world.blocks.liquid.Conduit;
 import mindustry.world.meta.*;
 
 import static mindustry.Vars.*;
@@ -29,7 +29,10 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
     static final float rotatePad = 6, hpad = rotatePad / 2f / 4f;
 
     public float speed = 5f;
+    public float maxPressure = 2.5f;
+    public float pressureIntake = 0.05f;
     public boolean armored = false;
+    public boolean hasPressure;
     public Color transparentColor = new Color(0.4f, 0.4f, 0.4f, 0.1f);
 
     public TextureRegion liquidr;
@@ -43,6 +46,7 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
         update = true;
         solid = false;
         hasItems = true;
+        hasPressure = true;
         conveyorPlacement = true;
         unloadable = false;
         itemCapacity = 1;
@@ -97,7 +101,6 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
     @Override
     public void setStats(){
         super.setStats();
-
         stats.add(Stat.itemsMoved, 60f / speed, StatUnit.itemsSecond);
     }
 
@@ -122,15 +125,6 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
         Draw.scl();
     }
 
-    //@Override
-    //        public boolean blendsArmored(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock){
-    //        return Point2.equals(tile.x + Geometry.d4(rotation).x, tile.y + Geometry.d4(rotation).y, otherx, othery)
-    //                        || ((!otherblock.rotatedOutput(otherx, othery) && Edges.getFacingEdge(otherblock, otherx, othery, tile) != null &&
-    //                        Edges.getFacingEdge(otherblock, otherx, othery, tile).relativeTo(tile) == rotation) ||
-    //
-    //                ((otherblock.rotatedOutput(otherx, othery)) && (otherblock.isDuct) && Point2.equals(otherx + Geometry.d4(otherrot).x, othery + Geometry.d4(otherrot).y, tile.x, tile.y)));
-    //    }
-
     @Override
     public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock){
         if(!armored){
@@ -152,17 +146,19 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
         if(bridgeReplacement instanceof ItemBridge bridge) Placement.calculateBridges(plans, bridge);
         if(bridgeReplacement instanceof DuctBridge bridge) Placement.calculateBridges(plans, bridge, false, b -> b instanceof Duct || b instanceof StackConveyor || b instanceof Conveyor);
     }
-    public class ItemLiquidDuctBuild extends ConduitBuild{
+    public class ItemLiquidDuctBuild extends Conduit.ConduitBuild {
+        public float pressure;
         public float progress;
         public @Nullable Item current;
         public int recDir = 0;
         public int blendbits, xscl, yscl, blending;
         public @Nullable Building next;
-        public @Nullable Duct.DuctBuild nextc;
+        public @Nullable Building nextc;
 
         @Override
         public void draw(){
             Building l = left(), ri = right(), f = front(), b = back();
+            drawPlaceText("left: "+l+" right: "+ri+" back: "+b+" front: "+f,(int)x/8,(int)y/8,true);
             float rotation = rotdeg();
             int r = this.rotation;
 
@@ -225,9 +221,10 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
 
         @Override
         public void updateTile() {
+            @Nullable Building l = left(), ri = right(), f = front(), b = back();
             smoothLiquid = Mathf.lerpDelta(smoothLiquid, liquids.currentAmount() / liquidCapacity, 0.05f);
             progress += edelta() / speed * 2f;
-            if (liquids.currentAmount() > 0.0001f && timer(timerFlow, 1)) {
+            if (liquids.currentAmount() > 0.0001f && timer(timerFlow, 1) && (pressure>0 && pressure <= maxPressure)) {
                 moveLiquidForward(leaks, liquids.current());
             }
             if (current != null && next != null) {
@@ -243,7 +240,6 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
                 current = items.first();
             }
         }
-
 
         @Override
         public boolean acceptItem(Building source, Item item){
@@ -289,7 +285,7 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
             yscl = bits[2];
             blending = bits[4];
             next = front();
-            nextc = next instanceof Duct.DuctBuild d ? d : null;
+            nextc = next;
 
             Building next = front(), prev = back();
             capped = next == null || next.team != team || !next.block.hasLiquids;

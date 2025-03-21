@@ -1,5 +1,9 @@
-package trs.type.turrets;
+package trs.type.defense.turrets;
 
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Nullable;
@@ -30,11 +34,18 @@ public class TRSItemTurret extends ItemTurret {
     public boolean isHeating = false;
     public boolean reloadWhileCharging = true;
 
+    public TextureRegion heatRegion;
+
     public String fraction;
     @Nullable public String fractionDescription;
 
     public TRSItemTurret(String name) {
         super(name);
+    }
+    @Override
+    public void load(){
+        super.load();
+        heatRegion = Core.atlas.find(name+"-heat");
     }
     @Override
     public void setBars(){
