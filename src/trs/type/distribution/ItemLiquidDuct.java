@@ -37,6 +37,7 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
 
     public TextureRegion liquidr;
     public TextureRegion borderRegion;
+    public TextureRegion BuildRegion;
 
     public @Nullable Block bridgeReplacement;
 
@@ -65,6 +66,7 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
         liquidr = liquidRegion;
         borderRegion = Core.atlas.find(name+"-border");
         rotateRegions = new TextureRegion[4][2][animationFrames];
+        BuildRegion = Core.atlas.find("trs-DrawBuild"+this.size+"x"+this.size);
 
         if(renderer != null){
             float pad = rotatePad;
@@ -109,6 +111,8 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
         super.init();
 
         if(bridgeReplacement == null || !(bridgeReplacement instanceof DuctBridge || bridgeReplacement instanceof ItemBridge)) bridgeReplacement = Blocks.ductBridge;
+
+
     }
 
     @Override
@@ -146,7 +150,7 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
         if(bridgeReplacement instanceof ItemBridge bridge) Placement.calculateBridges(plans, bridge);
         if(bridgeReplacement instanceof DuctBridge bridge) Placement.calculateBridges(plans, bridge, false, b -> b instanceof Duct || b instanceof StackConveyor || b instanceof Conveyor);
     }
-    public class ItemLiquidDuctBuild extends Conduit.ConduitBuild {
+    public class ItemLiquidDuctBuild extends ConduitBuild {
         public float pressure;
         public float progress;
         public @Nullable Item current;
@@ -154,11 +158,20 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
         public int blendbits, xscl, yscl, blending;
         public @Nullable Building next;
         public @Nullable Building nextc;
+        public float buildOffset;
+
 
         @Override
         public void draw(){
+            /*buildOffset = Mathf.approachDelta(buildOffset,3f,0.02f);
+                if (this.buildOffset != 3) {
+                    Draw.z(Layer.blockUnder - 0.01f);
+                    Draw.rect(BuildRegion, x - buildOffset, y - buildOffset);
+                    Draw.rect(BuildRegion, x + buildOffset, y - buildOffset, 90);
+                    Draw.rect(BuildRegion, x + buildOffset, y + buildOffset, 180);
+                    Draw.rect(BuildRegion, x - buildOffset, y + buildOffset, 270);
+                }*/
             Building l = left(), ri = right(), f = front(), b = back();
-            drawPlaceText("left: "+l+" right: "+ri+" back: "+b+" front: "+f,(int)x/8,(int)y/8,true);
             float rotation = rotdeg();
             int r = this.rotation;
 

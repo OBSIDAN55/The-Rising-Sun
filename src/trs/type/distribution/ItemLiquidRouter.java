@@ -3,6 +3,7 @@ package trs.type.distribution;
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
+import arc.math.Mat;
 import arc.math.Mathf;
 import arc.util.Nullable;
 import arc.util.Tmp;

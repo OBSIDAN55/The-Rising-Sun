@@ -4,7 +4,6 @@ import arc.graphics.Color;
 import arc.struct.Seq;
 import mindustry.content.*;
 import mindustry.entities.bullet.BasicBulletType;
-import mindustry.entities.effect.MultiEffect;
 import mindustry.entities.pattern.ShootAlternate;
 import mindustry.graphics.Pal;
 import mindustry.type.Category;
@@ -22,8 +21,10 @@ import mindustry.world.draw.*;
 import mindustry.world.meta.Env;
 import trs.type.*;
 import trs.type.Draw.RandomDrawGlowRegion;
+import trs.type.Drills.MultiBlockDrill;
 import trs.type.defense.turrets.CountForceProjector;
 import trs.type.distribution.*;
+import trs.type.Drills.ClusterDrill;
 import trs.type.multicraft.IOEntry;
 import trs.type.multicraft.MultiCrafter;
 import trs.type.multicraft.Recipe;
@@ -52,7 +53,7 @@ public class trsBlocks {
     //walls
             clinovalveWall,clinovalveWallLarge,zincWall,zincWallLarge,steelWall,steelWallLarge,carbonWall,carbonWallLarge,exacrimWall,exacrimWallLarge,
     //drills
-            hydraulicDrill,deepDrill,clusterDrill,
+            hydraulicDrill,deepDrill,clusterDrill,hui,huiPart,
     //turrets
         splash, artery,
     //power
@@ -464,6 +465,7 @@ public class trsBlocks {
             speed = 4f;
             liquidCapacity = 10f;
             leaks = false;
+            buildCostMultiplier = 100f;
 
         }};
         clinovalveRouter = new ItemLiquidRouter("clinovalve-router"){{
@@ -551,16 +553,17 @@ public class trsBlocks {
             drillTime = 281.25f;
             size = 3;
             tier = 4;
-            //drawer = new DrawMulti(new DrawRegion("-bottom"),new DrawPistons(){{}},new DrawDefault());
-            drillEffect = new MultiEffect(
-                    Fx.mineImpact,
-                    Fx.drillSteam,
-                    Fx.dynamicSpikes.wrap(Liquids.hydrogen.color, 30f),
-                    Fx.mineImpactWave.wrap(Liquids.hydrogen.color, 45f)
-            );
-            fogRadius = 5;
-
-            drillMultipliers.put(Items.beryllium, 1.35f);
+            consumeCoolant(0.05f);
+        }};
+        hui = new MultiBlockDrill("hui-drill"){{
+            requirements(Category.production, with(Items.lead, 2, Items.copper, 4));
+            size = 4;
+            customShadow = true;
+        }};
+        huiPart = new Block("hui-part"){{
+            requirements(Category.production, with(Items.lead, 2, Items.copper, 4));
+            size = 2;
+            customShadow = true;
         }};
         //walls
 
