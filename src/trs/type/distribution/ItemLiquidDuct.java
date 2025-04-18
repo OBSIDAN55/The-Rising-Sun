@@ -237,7 +237,7 @@ public class ItemLiquidDuct extends Conduit implements Autotiler {
             @Nullable Building l = left(), ri = right(), f = front(), b = back();
             smoothLiquid = Mathf.lerpDelta(smoothLiquid, liquids.currentAmount() / liquidCapacity, 0.05f);
             progress += edelta() / speed * 2f;
-            if (liquids.currentAmount() > 0.0001f && timer(timerFlow, 1) && (pressure>0 && pressure <= maxPressure)) {
+            if (liquids.currentAmount() > 0.0001f && timer(timerFlow, 1) /*&& (pressure>0 && pressure <= maxPressure)*/) {
                 moveLiquidForward(leaks, liquids.current());
             }
             if (current != null && next != null) {
