@@ -13,10 +13,11 @@ import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 import mindustry.type.unit.TankUnitType;
 import trs.type.BuildTurretRegenGeneratorCoreBlock;
+import trs.type.construsctors.TrsTankUnit;
 
 public class trsUnits {
     public static UnitType
-            disaster,massacre,apocalypse,unitType;
+            disaster,massacre,apocalypse;
     public static void load() {
         massacre = new TankUnitType("massacre"){{
             this.constructor = TankUnit::create;
@@ -52,7 +53,7 @@ public class trsUnits {
             }});
         }};
         disaster = new TankUnitType("disaster"){{
-            this.constructor = TankUnit::create;
+            this.constructor = TrsTankUnit::create;
             outlineColor = Color.valueOf("332C2CFF");
             hitSize = 46f;
             treadPullOffset = 1;
@@ -96,12 +97,12 @@ public class trsUnits {
             );
 
 
-            parts.addAll(
+            /**parts.addAll(
                     new RegionPart("-part0"),
                     new RegionPart("-part1"),
                     new RegionPart("-part2"),
                     new RegionPart("-part3")
-            );
+            );**/
         }};
         apocalypse = new TankUnitType("apocalypse"){{
             this.constructor = TankUnit::create;
@@ -163,7 +164,7 @@ public class trsUnits {
                 for(int i = 1; i <= 3; i++){
                     int fi = i;
                     parts.add(new RegionPart("-blades-"+i){{
-                        progress = PartProgress.warmup.delay((3 - fi) * 0.3f).blend(PartProgress.reload, 0.3f);
+                        progress = PartProgress.warmup.blend(PartProgress.recoil, 0.6f);
                         heatColor = new Color(1f, 0.1f, 0.1f);
                         mirror = true;
                         under = true;

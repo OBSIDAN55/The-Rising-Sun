@@ -16,6 +16,7 @@ import mindustry.ui.Bar;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import trs.content.trsBlocks;
+import trs.content.trsEnv;
 
 import static mindustry.Vars.*;
 
@@ -75,7 +76,7 @@ public class ExplosiveCharge extends Block {
             for (float x = startX; x < endX; x+=tilesize){
                 for (float y = startY; y > endY; y-=tilesize){
                     if (heat >= 0.999f) {
-                        if (Vars.world.tileWorld((int) x, (int) y).block() != trsBlocks.steelOre) {
+                        if (Vars.world.tileWorld((int) x, (int) y).block() != trsEnv.steelOre) {
                             Vars.world.tileWorld((int) x, (int) y).setBlock(Blocks.beamNode);
                         }
                     }

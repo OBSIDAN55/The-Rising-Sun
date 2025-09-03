@@ -456,44 +456,9 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
         }
 
         @Override
-        public void onProximityUpdate(){
-            super.onProximityUpdate();
-
-            for(Building other : state.teams.cores(team)){
-                if(other.tile() != tile){
-                    this.items = other.items;
-                }
-            }
-            state.teams.registerCore(this);
-
-            storageCapacity = itemCapacity + proximity().sum(e -> owns(e) ? e.block.itemCapacity : 0);
-            proximity.each(this::owns, t -> {
-                t.items = items;
-                ((StorageBuild)t).linkedCore = this;
-            });
-
-            for(Building other : state.teams.cores(team)){
-                if(other.tile() == tile) continue;
-                storageCapacity += other.block.itemCapacity + other.proximity().sum(e -> owns(other, e) ? e.block.itemCapacity : 0);
-            }
-
-            //Team.sharded.core().items.set(Items.surgeAlloy, 12000)
-            if(!world.isGenerating()){
-                for(Item item : content.items()){
-                    items.set(item, Math.min(items.get(item), storageCapacity));
-                }
-            }
-
-            for(CoreBuild other : state.teams.cores(team)){
-                other.storageCapacity = storageCapacity;
-            }
-        }
-
-        @Override
         public float range(){
             return range*2;
         }
-
 
         @Override
         public float warmup() {

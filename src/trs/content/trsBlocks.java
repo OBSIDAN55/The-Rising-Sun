@@ -25,17 +25,12 @@ import trs.type.Drills.MultiBlockDrill;
 import trs.type.defense.turrets.CountForceProjector;
 import trs.type.distribution.*;
 import trs.type.Drills.ClusterDrill;
-import trs.type.multicraft.IOEntry;
-import trs.type.multicraft.MultiCrafter;
-import trs.type.multicraft.Recipe;
 import trs.type.defense.turrets.TRSItemTurret;
 
 import static mindustry.type.ItemStack.with;
 
 public class trsBlocks {
     public static Block
-            //env
-            oreClinovalve,oreTin,quartzSand,darkSlate,steelOre,
     //cores
             Case,incedent,Signal,
             perseverance,fortitude,stability,a,b,c,
@@ -55,7 +50,7 @@ public class trsBlocks {
     //drills
             hydraulicDrill,deepDrill,clusterDrill,hui,huiPart,
     //turrets
-        splash, artery,
+        splash, artery, wire,
     //power
         carbonBiomassReactor;
 
@@ -279,6 +274,7 @@ public class trsBlocks {
                 color = Color.valueOf("b17702");
             }});
         }};
+/**
         melter = new MultiCrafter("melter"){{
             squareSprite = false;
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
@@ -357,6 +353,7 @@ public class trsBlocks {
                     }}
             );
         }};
+**/
         brazier = new GenericCrafter("brazier"){{
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
             size = 3;
@@ -379,6 +376,7 @@ public class trsBlocks {
                 color = Color.valueOf("56bff1");
             }});
         }};
+        /**
         crusher = new MultiCrafter("crusher"){{
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
             squareSprite = false;
@@ -460,6 +458,7 @@ public class trsBlocks {
                 );
 
         }};
+         **/
         clinovalveDuct = new ItemLiquidDuct("clinovalve-duct"){{
             requirements(Category.distribution, with(Items.copper, 1));
             speed = 4f;
@@ -511,21 +510,7 @@ public class trsBlocks {
             liquidCapacity = 10f;
         }};
 
-        //env
-        oreClinovalve = new OreBlock("ore-clinovalve",trsItems.clinovalve){{
-            oreDefault = true;
-            variants = 3;
-        }};
-        oreTin = new OreBlock("ore-tin",trsItems.tin){{
-            oreDefault = true;
-            variants = 3;
-        }};
-        quartzSand = new Floor("quartz-sand",4){{
-            itemDrop = trsItems.quartz;
 
-        }};
-        darkSlate = new Floor("dark-slate",0);
-        steelOre = new StaticWall("steel-ore");
         //drills
         hydraulicDrill = new Drill("hydraulic-drill"){{
             requirements(Category.production, with(Items.lead, 2, Items.copper, 2));
@@ -684,6 +669,8 @@ public class trsBlocks {
                 spread = 10f;
             }},new DrawDefault());
         }};
-
+        wire = new PowerZone("wire"){{
+            requirements(Category.turret, with(Items.copper,1));
+        }};
     }
 }
