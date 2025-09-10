@@ -5,7 +5,7 @@ import mindustry.type.Item;
 
 public class trsItems {
     public static Item
-            exacrim, tin, clinovalve, rubidium, barium, zinc, chrome, steel, biomass, carbon,carbonDust,quartz,quartzDust, carbonGlass,deuteriumCell;
+            exacrim, tin, clinovalve, rubidium, barium, zinc, chrome, steel, biomass, carbon,carbonDust,quartz,quartzDust, carbonGlass;
     public static void load(){
         tin = new Item("tin", Color.valueOf("54554CFF")){{
             hardness = 1;

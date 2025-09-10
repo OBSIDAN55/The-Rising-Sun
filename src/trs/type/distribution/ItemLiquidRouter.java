@@ -146,7 +146,7 @@ public class ItemLiquidRouter extends LiquidRouter {
             items.add(item, 1);
             lastItem = item;
             time = 0f;
-            lastInput = source.tile();
+            lastInput = source.tileOn();
         }
 
         @Override

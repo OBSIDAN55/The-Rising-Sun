@@ -10,24 +10,24 @@ import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
-import arc.struct.Queue;
+
 import arc.util.*;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.TargetPriority;
-import mindustry.entities.Units;
+
 import mindustry.entities.units.BuildPlan;
 import mindustry.game.Teams;
 import mindustry.gen.*;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
-import mindustry.graphics.MultiPacker;
+
 import mindustry.graphics.Pal;
 import mindustry.io.TypeIO;
 import mindustry.logic.Ranged;
-import mindustry.type.Item;
+
 import mindustry.type.UnitType;
 import mindustry.ui.Bar;
 import mindustry.world.Build;
@@ -39,7 +39,7 @@ import mindustry.world.consumers.ConsumeItems;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.draw.DrawDefault;
 import mindustry.world.meta.*;
-import trs.content.trsUnits;
+
 
 import static mindustry.Vars.*;
 
@@ -100,7 +100,7 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
     }
 
     public static void playerSpawn(Tile tile, Player player){
-        if(player == null || tile == null || !(tile.build instanceof CoreBuild core)) return;
+        if(player == null || tile == null || !(tile.build instanceof CoreBuild)) return;
     }
 
     @Override
@@ -166,7 +166,7 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
             stats.add(Stat.booster, StatValues.itemBoosters(
                             "{0}" + StatUnit.timesSpeed.localized(),
                             stats.timePeriod, (phaseBoost + healPercent) / healPercent, phaseRangeBoost,
-                            cons.items, this::consumesItem)
+                            cons.items)
             );
         }
         stats.add(trs.type.Vars.buildRadius, buildRange / tilesize, StatUnit.blocks);

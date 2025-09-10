@@ -19,6 +19,9 @@ import mindustry.world.blocks.production.Drill;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.draw.*;
 import mindustry.world.meta.Env;
+import trs.multicraft.IOEntry;
+import trs.multicraft.MultiCrafter;
+import trs.multicraft.Recipe;
 import trs.type.*;
 import trs.type.Draw.RandomDrawGlowRegion;
 import trs.type.Drills.MultiBlockDrill;
@@ -274,7 +277,7 @@ public class trsBlocks {
                 color = Color.valueOf("b17702");
             }});
         }};
-/**
+
         melter = new MultiCrafter("melter"){{
             squareSprite = false;
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
@@ -288,6 +291,7 @@ public class trsBlocks {
                                     trsItems.clinovalve, 4,
                                     trsItems.tin, 2
                             );
+                            power = 2f;
                         }};
                         output = new IOEntry(){{
                             items = ItemStack.with(
@@ -353,7 +357,7 @@ public class trsBlocks {
                     }}
             );
         }};
-**/
+
         brazier = new GenericCrafter("brazier"){{
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
             size = 3;

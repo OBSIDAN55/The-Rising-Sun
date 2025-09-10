@@ -5,7 +5,7 @@ import mindustry.type.Liquid;
 
 public class trsLiquids {
     public static Liquid
-    metan,argon,crystalWater,tritium,deuterium;
+    metan,argon,crystalWater;
 
     public static void load(){
         metan = new Liquid("metan",Color.valueOf("62392CFF")){{
