@@ -8,11 +8,13 @@ import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.part.HaloPart;
 import mindustry.entities.part.RegionPart;
 import mindustry.gen.*;
+import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 import mindustry.type.unit.TankUnitType;
 import trs.type.HealthTrackingTankUnit;
 import trs.type.HealthTrackingTankUnitType;
+import trs.type.ShootAlternateSpread;
 
 
 public class trsUnits {
@@ -52,57 +54,59 @@ public class trsUnits {
                 }});
             }});
         }};
-        disaster = new HealthTrackingTankUnitType("disaster"){{   
-            this.constructor = HealthTrackingTankUnit::create;    
+        disaster = new HealthTrackingTankUnitType("disaster"){{
+            this.constructor = HealthTrackingTankUnit::create;
                  outlineColor = Color.valueOf("332C2CFF");
+                 outlines = false;
             hitSize = 46f;
-            treadPullOffset = 1;
             speed = 0.48f;
             health = 22000;
             armor = 26f;
             crushDamage = 25f / 5f;
             rotateSpeed = 0.8f;
-            float xo = 128f/2f, yo = 128f/2f;
-            treadRects = new Rect[]{new Rect(12-xo, 40-yo , 29, 31),new Rect(15-xo, 117-yo , 28, 31)};
+            treadRects = new Rect[]{new Rect(-53f, 24f, 30, 32),new Rect(-50f, -53f, 30, 32)};
 
 
             weapons.add(new Weapon(name+"-weapon"){{
-                            reload = 100f;
-                            minWarmup = 0.9f;
+                            reload = 35f;
                             layerOffset = 0.1f;
                             rotate = true;
                             mirror = false;
+                            recoils = 2;
+                             shoot = new ShootAlternateSpread(15,10,4);
+                inaccuracy = 0.2f;
+                velocityRnd = 0.17f;
+                shake = 1f;
+                shootCone = 40f;
+                recoil = 0.5f;
+                minWarmup = 0.8f;
                             x = 0f;
                             y = 0f;
-                            parts.addAll(new RegionPart("-part1"){{
-                                progress = PartProgress.warmup;
-                                mirror = true;
-                                moveX = -5f/4;
-                                moveY = -7f/4;
-                                moveRot = 15f;
-                                layerOffset = -0.01f;
-                                outline = true;
-                            }},new RegionPart("-part2"){{
-                                progress = PartProgress.warmup;
-                                mirror = true;
-                                moveX = -25f/4;
-                                moveY = -15f/4;
-                                moveRot = -15f;
-                                layerOffset = -0.02f;
-                                outline = true;
-                            }});
-            }}
-
-
-            );
-
-
-            /**parts.addAll(
-                    new RegionPart("-part0"),
-                    new RegionPart("-part1"),
-                    new RegionPart("-part2"),
-                    new RegionPart("-part3")
-            );**/
+                            shootY = 15f;
+                            bullet = new BasicBulletType(8f, 41){{
+                                knockback = 4f;
+                                width = 25f;
+                                hitSize = 7f;
+                                height = 20f;
+                                shootEffect = Fx.shootBigColor;
+                                smokeEffect = Fx.shootSmokeSquareSparse;
+                                ammoMultiplier = 1;
+                                hitColor = backColor = trailColor = Color.valueOf("ea8878");
+                                frontColor = Pal.redLight;
+                                trailWidth = 6f;
+                                trailLength = 3;
+                                hitEffect = despawnEffect = Fx.hitSquaresColor;
+                                buildingDamageMultiplier = 0.2f;
+                            }};
+                for(int i = 0; i < 2; i++) {
+                    int f = i;
+                    parts.add(new RegionPart("-anim" + (i == 0 ? "1" : "2")) {{
+                        progress = PartProgress.warmup.delay((2 - f) * 0.3f).blend(PartProgress.recoil, 0.26f);
+                                  recoilIndex = f;
+                                  under = true;
+                                  moveY = -1.5f;
+                                  moveX = 2.6f*(f == 0 ? -1 : 1);
+                              }});}}});
         }};
         apocalypse = new TankUnitType("apocalypse"){{
             this.constructor = TankUnit::create;

@@ -1,5 +1,7 @@
 package trs.content;
 
+import static mindustry.type.ItemStack.with;
+
 import arc.graphics.Color;
 import arc.struct.Seq;
 import mindustry.content.*;
@@ -8,12 +10,8 @@ import mindustry.entities.pattern.ShootAlternate;
 import mindustry.graphics.Pal;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
-import mindustry.type.LiquidStack;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.Wall;
-import mindustry.world.blocks.environment.Floor;
-import mindustry.world.blocks.environment.OreBlock;
-import mindustry.world.blocks.environment.StaticWall;
 import mindustry.world.blocks.power.ConsumeGenerator;
 import mindustry.world.blocks.production.Drill;
 import mindustry.world.blocks.production.GenericCrafter;
@@ -24,13 +22,11 @@ import trs.multicraft.MultiCrafter;
 import trs.multicraft.Recipe;
 import trs.type.*;
 import trs.type.Draw.RandomDrawGlowRegion;
+import trs.type.Drills.ClusterDrill;
 import trs.type.Drills.MultiBlockDrill;
 import trs.type.defense.turrets.CountForceProjector;
-import trs.type.distribution.*;
-import trs.type.Drills.ClusterDrill;
 import trs.type.defense.turrets.TRSItemTurret;
-
-import static mindustry.type.ItemStack.with;
+import trs.type.distribution.*;
 
 public class trsBlocks {
     public static Block

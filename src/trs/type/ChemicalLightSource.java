@@ -1,27 +1,22 @@
 package trs.type;
 
+import static mindustry.Vars.tilesize;
+
 import arc.graphics.Blending;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
-import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mindustry.gen.Building;
-import mindustry.gen.Icon;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
 import mindustry.input.Placement;
-import mindustry.logic.LAccess;
-import mindustry.ui.Styles;
 import mindustry.world.Block;
 import mindustry.world.meta.Env;
-
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.ui;
 
 public class ChemicalLightSource extends Block {
     public float brightness = 0.9f;

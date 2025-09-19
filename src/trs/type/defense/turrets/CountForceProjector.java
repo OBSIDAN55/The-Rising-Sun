@@ -2,23 +2,16 @@ package trs.type.defense.turrets;
 
 import arc.Events;
 import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.Fill;
-import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
 import arc.util.Time;
 import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.gen.Groups;
-import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
-import mindustry.logic.LExecutor;
 import mindustry.ui.Bar;
 import mindustry.world.blocks.defense.ForceProjector;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.Vars.renderer;
 
 public class CountForceProjector extends ForceProjector {
 

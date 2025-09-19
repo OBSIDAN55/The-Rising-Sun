@@ -4,14 +4,13 @@ import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.scene.utils.*;
 import arc.util.*;
+import java.util.*;
 import mindustry.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import trs.multicraft.MultiCrafter.*;
-
-import java.util.*;
 
 public abstract class RecipeSwitchStyle {
     public static HashMap<String, RecipeSwitchStyle> all = new HashMap<>();

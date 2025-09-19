@@ -1,5 +1,7 @@
 package trs.multicraft;
 
+import static mindustry.Vars.*;
+
 import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -27,8 +29,6 @@ import mindustry.world.consumers.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 import trs.multicraft.ui.*;
-
-import static mindustry.Vars.*;
 
 public class MultiCrafter extends PayloadBlock {
     public boolean hasHeat = false;

@@ -3,9 +3,8 @@ package trs.multicraft;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.serialization.*;
-import mindustry.type.*;
-
 import java.util.*;
+import mindustry.type.*;
 
 public class ParserUtils {
 

@@ -11,7 +11,6 @@ import mindustry.type.Liquid;
 import mindustry.world.blocks.distribution.Sorter;
 import mindustry.world.meta.BlockGroup;
 
-import static mindustry.world.blocks.liquid.LiquidBlock.drawTiledFrames;
 
 
 public class ItemLiquidSorter extends Sorter {

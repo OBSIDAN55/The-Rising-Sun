@@ -1,11 +1,10 @@
 package trs.type.weather;
 
+import java.util.Random;
 import mindustry.entities.Damage;
 import mindustry.game.Team;
 import mindustry.gen.WeatherState;
 import mindustry.type.weather.ParticleWeather;
-
-import java.util.Random;
 
 public class DamageWeather extends ParticleWeather {
     public float damage = 50f;

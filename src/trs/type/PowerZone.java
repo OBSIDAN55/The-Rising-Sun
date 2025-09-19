@@ -1,27 +1,14 @@
 package trs.type;
 
-import arc.Core;
-import arc.func.Func;
+import static mindustry.Vars.tilesize;
+
 import arc.graphics.Color;
-import arc.math.Mathf;
-import arc.math.geom.Point2;
-import arc.struct.Seq;
-import arc.util.Tmp;
-import mindustry.core.UI;
+import java.awt.*;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
-import mindustry.graphics.Pal;
-import mindustry.ui.Bar;
-import mindustry.world.Block;
 import mindustry.world.blocks.power.PowerNode;
 import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
-import mindustry.world.meta.Stat;
-import mindustry.world.meta.StatUnit;
-
-import java.awt.*;
-
-import static mindustry.Vars.tilesize;
 
 public class PowerZone extends PowerNode {
 

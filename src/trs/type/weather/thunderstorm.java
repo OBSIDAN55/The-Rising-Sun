@@ -1,13 +1,10 @@
 package trs.type.weather;
 
+import java.util.Random;
 import mindustry.entities.Damage;
-import mindustry.entities.Effect;
 import mindustry.game.Team;
 import mindustry.gen.WeatherState;
 import mindustry.type.weather.RainWeather;
-import mindustry.world.blocks.environment.SpawnBlock;
-
-import java.util.Random;
 
 public class thunderstorm extends RainWeather {
 

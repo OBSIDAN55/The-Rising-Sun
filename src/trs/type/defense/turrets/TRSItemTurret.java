@@ -1,27 +1,23 @@
 package trs.type.defense.turrets;
 
+import static mindustry.Vars.tilesize;
+import static mindustry.graphics.Drawf.circles;
+
 import arc.Core;
-import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Time;
+import java.util.Objects;
 import mindustry.entities.Units;
 import mindustry.gen.Unit;
 import mindustry.graphics.Pal;
-import mindustry.logic.Ranged;
 import mindustry.ui.Bar;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import trs.type.Vars;
-
-import java.util.Objects;
-
-import static mindustry.Vars.tilesize;
-import static mindustry.graphics.Drawf.circles;
 
 public class TRSItemTurret extends ItemTurret {
 
@@ -74,7 +70,7 @@ public class TRSItemTurret extends ItemTurret {
             this.stats.add(Vars.fractionName, fraction);
         }
     }
-    public class TRSItemTurretBuild extends ItemTurretBuild implements Ranged {
+    public class TRSItemTurretBuild extends ItemTurretBuild{
         public float turretHeat;
         public float refresh = Mathf.random(refreshInterval);
         public Seq<Unit> targets = new Seq<>();
@@ -109,4 +105,3 @@ public class TRSItemTurret extends ItemTurret {
         }
     }
 }
-

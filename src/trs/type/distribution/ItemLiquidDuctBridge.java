@@ -1,17 +1,10 @@
 package trs.type.distribution;
 
-import arc.math.Mathf;
-import arc.math.geom.Point2;
 import arc.util.Nullable;
-import mindustry.entities.TargetPriority;
 import mindustry.gen.Building;
-import mindustry.type.Item;
 import mindustry.world.ItemBuffer;
-import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.BufferedItemBridge;
-import mindustry.world.meta.BlockGroup;
 
-import static mindustry.Vars.world;
 
 public class ItemLiquidDuctBridge extends BufferedItemBridge {
 

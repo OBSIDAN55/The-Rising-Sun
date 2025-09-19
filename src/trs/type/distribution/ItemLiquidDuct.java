@@ -1,8 +1,9 @@
 package trs.type.distribution;
 
+import static mindustry.Vars.*;
+import static mindustry.type.Liquid.animationFrames;
+
 import arc.Core;
-import mindustry.world.blocks.Autotiler;
-import mindustry.world.blocks.distribution.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -18,13 +19,11 @@ import mindustry.graphics.*;
 import mindustry.input.*;
 import mindustry.type.*;
 import mindustry.world.*;
+import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.liquid.Conduit;
 import mindustry.world.meta.*;
 
-import static mindustry.Vars.*;
-import static mindustry.type.Liquid.animationFrames;
-
-public class ItemLiquidDuct extends Conduit implements Autotiler {
+public class ItemLiquidDuct extends Conduit{
 
     static final float rotatePad = 6, hpad = rotatePad / 2f / 4f;
 

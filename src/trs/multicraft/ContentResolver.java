@@ -1,10 +1,13 @@
 package trs.multicraft;
 
+import static trs.multicraft.ParserUtils.*;
+
 import arc.*;
 import arc.func.*;
 import arc.graphics.g2d.*;
 import arc.scene.style.*;
 import arc.util.*;
+import java.lang.reflect.*;
 import mindustry.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
@@ -12,10 +15,6 @@ import mindustry.entities.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.*;
-
-import java.lang.reflect.*;
-
-import static trs.multicraft.ParserUtils.*;
 
 public class ContentResolver {
 

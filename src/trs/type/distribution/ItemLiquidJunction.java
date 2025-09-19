@@ -1,5 +1,7 @@
 package trs.type.distribution;
 
+import static mindustry.Vars.content;
+
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
@@ -17,8 +19,6 @@ import mindustry.type.Liquid;
 import mindustry.world.DirectionalItemBuffer;
 import mindustry.world.blocks.liquid.LiquidJunction;
 import mindustry.world.meta.BlockGroup;
-
-import static mindustry.Vars.content;
 
 public class ItemLiquidJunction extends LiquidJunction {
 

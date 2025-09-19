@@ -1,5 +1,8 @@
 package trs.type;
 
+import static mindustry.Vars.content;
+import static mindustry.Vars.tilesize;
+
 import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.struct.EnumSet;
@@ -7,6 +10,7 @@ import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Log;
 import arc.util.Structs;
+import java.lang.reflect.Constructor;
 import mindustry.ctype.UnlockableContent;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -16,11 +20,6 @@ import mindustry.world.Block;
 import mindustry.world.blocks.environment.OverlayFloor;
 import mindustry.world.consumers.Consume;
 import mindustry.world.meta.*;
-
-import java.lang.reflect.Constructor;
-
-import static mindustry.Vars.content;
-import static mindustry.Vars.tilesize;
 
 public class Wire extends OverlayFloor {
 

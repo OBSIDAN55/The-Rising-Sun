@@ -1,17 +1,17 @@
 package trs.type;
 
-import mindustry.gen.TankUnit;
-import mindustry.gen.Unitc;
-import mindustry.gen.Unit;
-import arc.graphics.g2d.Draw;
-import mindustry.graphics.Layer;
-import arc.graphics.g2d.TextureRegion;
 import arc.Core;
 import arc.graphics.Color;
-import arc.struct.ObjectMap;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
+import arc.struct.ObjectMap;
 import arc.util.Time;
 import mindustry.Vars;
+import mindustry.gen.TankUnit;
+import mindustry.gen.Unit;
+import mindustry.gen.Unitc;
+import mindustry.graphics.Layer;
 
 /**
  * Утилитный класс для работы с частями танка в зависимости от здоровья
@@ -65,6 +65,38 @@ public class HealthTrackingTankUnit {
      */
     public static Color getDebugColor() {
         return debugColor;
+    }
+    
+    /**
+     * Установить цвет отладки
+     */
+    public static void setDebugColor(Color color) {
+        debugColor = color;
+    }
+    
+    /**
+     * Получить состояние анимации для юнита
+     */
+    public static UnitAnimState getAnimState(Unitc unit) {
+        return animStates.get(unit);
+    }
+    
+    /**
+     * Получить длительность анимации отваливания
+     */
+    public static float getDetachDuration() {
+        return detachDuration;
+    }
+    
+    /**
+     * Инициализировать состояние анимации для юнита
+     */
+    public static void initAnimState(Unitc unit) {
+        if (animStates.get(unit) == null) {
+            float healthPercent = unit.healthf();
+            UnitAnimState state = new UnitAnimState(healthPercent, 0);
+            animStates.put(unit, state);
+        }
     }
     
     /**
@@ -142,16 +174,12 @@ public class HealthTrackingTankUnit {
             debugDraw("Part " + i + ": " + partName + " (weapon: " + isWeaponPart + ")");
         }
 
-        // Рисуем на слое поверх корпуса
-        Draw.z(Layer.groundUnit + 0.11f);
+        // Рисуем на слое поверх башни (части корпуса)
+        Draw.z(Layer.groundUnit + 0.2f);
 
-        // Система отваливания частей по порогам здоровья (случайно)
-        // Проверяем пороги: 80%, 60%, 40%, 20%
-        int expectedDetached = 0;
-        if (healthPercent < 0.8f) expectedDetached = 1;
-        if (healthPercent < 0.6f) expectedDetached = 2;
-        if (healthPercent < 0.4f) expectedDetached = 3;
-        if (healthPercent < 0.2f) expectedDetached = 4;
+        // Адаптивная система отваливания частей: количество отвалившихся частей
+        // линейно зависит от потери здоровья. К 0% HP отваливаются все найденные части.
+        int expectedDetached = Mathf.clamp((int)Mathf.floor((1f - healthPercent) * partCount + 1e-4f), 0, partCount);
         
         // Отваливаем части до достижения нужного количества
         while (state.detachedCount < expectedDetached && state.detachedCount < partCount) {
@@ -191,6 +219,8 @@ public class HealthTrackingTankUnit {
             }
         }
         
+        // Убираем отладку полей - она не нужна
+
         // Обрабатываем все части
         debugDraw("Processing " + partCount + " parts for unit " + unit.type().name);
         for (int i = 0; i < partCount; i++) {
@@ -209,9 +239,8 @@ public class HealthTrackingTankUnit {
             if (!anim.detached) {
                 // Обычная привязанная часть
                 if (isWeaponPart) {
-                    // Части оружия поворачиваются с башней
-                    debugDraw("Drawing weapon part: " + partName);
-                    drawWeaponPart(unit, partName);
+                    // Части оружия НЕ рисуем здесь - они будут рисоваться в drawWeapon()
+                    debugDraw("Skipping weapon part (will be drawn in drawWeapon): " + partName);
                 } else {
                     // Части корпуса не поворачиваются
                     debugDraw("Drawing body part: " + partName);
@@ -231,8 +260,8 @@ public class HealthTrackingTankUnit {
 
                 float life = Mathf.clamp(anim.t / detachDuration);
                 float alpha = 1f - life;
-                // Поднимаем слой отрисовки выше корпуса
-                Draw.z(Layer.groundUnit + 0.2f);
+                // Поднимаем слой отрисовки выше корпуса, но под башней
+                Draw.z(Layer.groundUnit + 0.1f);
                 Color prev = Draw.getColor().cpy();
                 Draw.color(prev.r, prev.g, prev.b, alpha);
                 float rot = unit.rotation() - 90f + anim.spin;
@@ -279,8 +308,8 @@ public class HealthTrackingTankUnit {
                 // clamp флэша
                 if (flash < 0f) flash = 0f; if (flash > 1f) flash = 1f;
 
-                // Рисуем основную часть с учётом флэша
-                Draw.z(Layer.groundUnit + 0.11f);
+                // Рисуем основную часть с учётом флэша (корпус)
+                Draw.z(Layer.groundUnit + 0.05f);
                 if (flash > 0f) Draw.mixcol(Color.white, flash);
                 Draw.rect(region, unit.x(), unit.y(), unit.rotation() - 90);
                 if (flash > 0f) Draw.mixcol();
@@ -294,39 +323,6 @@ public class HealthTrackingTankUnit {
         }
     }
 
-    /**
-     * Отрисовка части оружия (поворачивается с башней)
-     */
-    private static void drawWeaponPart(Unitc unit, String partName) {
-        try {
-            TextureRegion region = Core.atlas.find(unit.type().name + partName);
-            if (region == null || !region.found()) {
-                region = Core.atlas.find("disaster" + partName);
-            }
-            
-            if (region != null && region.found()) {
-                // Анимация попадания как у корпуса
-                float flash = 0f;
-                if (unit instanceof Unit u) {
-                    flash = u.hitTime;
-                }
-                if (flash < 0f) flash = 0f; 
-                if (flash > 1f) flash = 1f;
-
-                Draw.z(Layer.groundUnit + 0.11f);
-                if (flash > 0f) Draw.mixcol(Color.white, flash);
-                
-                // Части оружия поворачиваются с башней (используем rotation юнита)
-                Draw.rect(region, unit.x(), unit.y(), unit.rotation() - 90);
-                
-                if (flash > 0f) Draw.mixcol();
-            } else {
-                System.out.println("Weapon part region not found for: " + partName);
-            }
-        } catch (Exception e) {
-            System.out.println("Error drawing weapon part " + partName + ": " + e.getMessage());
-        }
-    }
 
     // Вспомогательное рисование части со смещением и произвольным поворотом (для отлёта)
     private static void drawPartOffset(Unitc unit, String partName, float offx, float offy, float rotation) {
@@ -345,7 +341,7 @@ public class HealthTrackingTankUnit {
                 if (region != null && region.found()) break;
             }
             if (region != null && region.found()) {
-                Draw.z(Layer.groundUnit + 0.11f);
+                Draw.z(Layer.groundUnit + 0.05f);
                 Draw.rect(region, unit.x() + offx, unit.y() + offy, rotation);
             }
         } catch (Exception ignored) {}
@@ -393,42 +389,47 @@ public class HealthTrackingTankUnit {
     }
     
 
-    private static class UnitAnimState {
+    public static class UnitAnimState {
         final PartAnim[] parts;
         final String[] partNames; // Имена всех частей
         final boolean[] isWeaponPart; // Является ли часть частью оружия
         int detachedCount = 0; // Количество отвалившихся частей
+        float[] smoothedRecoil; // сглаженная отдача по монтировкам
         
         UnitAnimState(float initialHealth, int partCount) { 
-            // Динамически собираем все части из атласа по именам
+            // Ищем только части корпуса (НЕ части оружия)
             java.util.ArrayList<String> body = new java.util.ArrayList<>();
-            java.util.ArrayList<String> weapon = new java.util.ArrayList<>();
 
-            for (TextureRegion reg : Core.atlas.getRegions()) {
-                if (reg == null || !reg.found()) continue;
-                String rn = reg.toString();
-                if (rn == null) continue;
-                String lower = rn.toLowerCase();
-                if (!lower.contains("disaster") || !lower.contains("part")) continue;
-                if (lower.endsWith("-outline")) continue;
-
-                int idx = lower.indexOf("disaster");
-                String suffix = rn.substring(idx + "disaster".length());
-                if (!suffix.startsWith("-")) continue; // ожидаем формат disaster-...
-
-                if (suffix.contains("-weapon")) weapon.add(suffix);
-                else body.add(suffix);
+            // Части корпуса 0..29
+            for (int i = 0; i < 30; i++) {
+                String suffix = "-part" + i;
+                if (isPartExists(null, suffix)) {
+                    body.add(suffix);
+                    debugDraw("Found body part: " + suffix);
+                }
             }
 
-            // Если есть базовое оружие без -part
-            TextureRegion wepBase = Core.atlas.find("disaster-weapon");
-            if (wepBase != null && wepBase.found() && !weapon.contains("-weapon")) weapon.add("-weapon");
+            // Если ничего не нашли через явный перебор, пробуем общий скан атласа как fallback
+            if (body.isEmpty()) {
+                for (TextureRegion reg : Core.atlas.getRegions()) {
+                    if (reg == null || !reg.found()) continue;
+                    String rn = reg.toString();
+                    if (rn == null) continue;
+                    String lower = rn.toLowerCase();
+                    if (!lower.contains("disaster") || !lower.contains("part")) continue;
+                    if (lower.endsWith("-outline")) continue;
+                    if (lower.contains("-weapon")) continue; // Пропускаем части оружия
+                    int idx = lower.indexOf("disaster");
+                    String suffix = rn.substring(idx + "disaster".length());
+                    if (!suffix.startsWith("-")) continue;
+                    body.add(suffix);
+                }
+            }
 
             // Сортируем для детерминированности
             java.util.Collections.sort(body);
-            java.util.Collections.sort(weapon);
 
-            int actualPartCount = body.size() + weapon.size();
+            int actualPartCount = body.size();
 
             this.parts = new PartAnim[actualPartCount];
             this.partNames = new String[actualPartCount];
@@ -437,24 +438,17 @@ public class HealthTrackingTankUnit {
             int index = 0;
             for (String s : body) {
                 this.partNames[index] = s;
-                this.isWeaponPart[index] = false;
+                this.isWeaponPart[index] = false; // Все части корпуса
                 this.parts[index] = new PartAnim();
                 index++;
                 debugDraw("Found body part: " + s);
-            }
-            for (String s : weapon) {
-                this.partNames[index] = s;
-                this.isWeaponPart[index] = true;
-                this.parts[index] = new PartAnim();
-                index++;
-                debugDraw("Found weapon part: " + s);
             }
 
             debugDraw("UnitAnimState initialized with " + actualPartCount + " actual parts");
         }
     }
 
-    private static class PartAnim {
+    public static class PartAnim {
         boolean detached;
         float t;            // прошедшее время
         float offx, offy;   // смещение

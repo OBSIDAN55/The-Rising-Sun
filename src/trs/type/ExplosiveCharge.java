@@ -1,6 +1,7 @@
 package trs.type;
 
-import arc.func.Prov;
+import static mindustry.Vars.*;
+
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.math.geom.Geometry;
@@ -14,11 +15,7 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
 import mindustry.world.Block;
-import mindustry.world.Tile;
-import trs.content.trsBlocks;
 import trs.content.trsEnv;
-
-import static mindustry.Vars.*;
 
 public class ExplosiveCharge extends Block {
 

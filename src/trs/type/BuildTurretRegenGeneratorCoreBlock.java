@@ -1,5 +1,7 @@
 package trs.type;
 
+import static mindustry.Vars.*;
+
 import arc.Core;
 import arc.func.Cons;
 import arc.graphics.Color;
@@ -10,24 +12,20 @@ import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
-
 import arc.util.*;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.TargetPriority;
-
 import mindustry.entities.units.BuildPlan;
 import mindustry.game.Teams;
 import mindustry.gen.*;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
-
 import mindustry.graphics.Pal;
 import mindustry.io.TypeIO;
 import mindustry.logic.Ranged;
-
 import mindustry.type.UnitType;
 import mindustry.ui.Bar;
 import mindustry.world.Build;
@@ -39,9 +37,6 @@ import mindustry.world.consumers.ConsumeItems;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.draw.DrawDefault;
 import mindustry.world.meta.*;
-
-
-import static mindustry.Vars.*;
 
 public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
 

@@ -3,7 +3,6 @@ package trs.type.distribution;
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
-import arc.math.Mat;
 import arc.math.Mathf;
 import arc.util.Nullable;
 import arc.util.Tmp;
@@ -14,7 +13,6 @@ import mindustry.gen.Building;
 import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
-import mindustry.graphics.MultiPacker;
 import mindustry.type.Item;
 import mindustry.world.Tile;
 import mindustry.world.blocks.ControlBlock;
@@ -190,4 +188,3 @@ public class ItemLiquidRouter extends LiquidRouter {
         }
     }
 }
-
