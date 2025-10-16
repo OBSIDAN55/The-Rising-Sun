@@ -1,5 +1,7 @@
 package trs;
 
+import arc.Application;
+import arc.util.OS;
 import mindustry.mod.Mod;
 import trs.content.*;
 import trs.type.TrsBulletTypes;
@@ -9,6 +11,7 @@ public class trsMod extends Mod {
     public trsMod(){
     }
     public void loadContent(){
+        if (OS.isAndroid){ System.exit(0);}
         Vars.load();
         Sounds.load();
         trsStatusEffects.load();

@@ -1,4 +1,4 @@
-package trs.type;
+package trs.type.cores;
 
 import static mindustry.Vars.*;
 
@@ -40,6 +40,7 @@ import mindustry.world.meta.*;
 
 public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
 
+    public static Building BuildTurretRegenGeneratorCoreBlockBuild;
     public final int timerTarget = timers++, timerTarget2 = timers++;
     public int targetInterval = 15;
 
@@ -174,7 +175,7 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
         super.setBars();
         if(isGenerator){
             if(hasPower && outputsPower){
-                addBar("power", (RegenGeneratorCoreBlockBuild entity) -> new Bar(() ->
+                addBar("power", (BuildTurretRegenGeneratorCoreBlockBuild entity) -> new Bar(() ->
                     Core.bundle.format("bar.poweroutput",
                             Strings.fixed(entity.getPowerProduction() * 60 * entity.timeScale(), 1)),
                     () -> Pal.powerBar,
@@ -218,7 +219,7 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
         drawer.drawPlan(this, plan, list);
     }
 
-    public class RegenGeneratorCoreBlockBuild extends CoreBuild implements Ranged, ControlBlock {
+    public class BuildTurretRegenGeneratorCoreBlockBuild extends CoreBuild implements Ranged, ControlBlock {
 
         public BlockUnitc unit = (BlockUnitc) unitType.create(team);
         public @Nullable Unit following;

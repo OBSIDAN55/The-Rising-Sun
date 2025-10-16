@@ -34,6 +34,8 @@ import trs.multicraft.Recipe;
 import trs.type.*;
 import trs.type.Draw.RandomDrawGlowRegion;
 import trs.type.Drills.ClusterDrill;
+import trs.type.cores.BuildTurretRegenGeneratorCoreBlock;
+import trs.type.cores.CoreLinkVaultUnitFactory;
 import trs.type.defense.turrets.TRSItemTurret;
 import trs.type.distribution.*;
 import trs.type.power.LargeVariableNode;
@@ -46,6 +48,7 @@ public class trsBlocks {
     //cores
             Case,incedent,Signal,
             perseverance,fortitude,stability,a,b,c,
+            cellFactory,
     //fractions
     acronyx,arha,hronos,phoenix,
     //prod
@@ -139,9 +142,28 @@ public class trsBlocks {
 
             squareSprite = false;
 
+
             drawer = new DrawRegion("-r"){{
                 layer = 29.99f;
             }};
+        }};
+
+        cellFactory = new CoreLinkVaultUnitFactory("cell-fabricator"){{
+            requirements(Category.effect, with(Items.copper, 15));
+            plans = Seq.with(
+                    new UnitPlan(UnitTypes.dagger, 60f * 15, with(Items.silicon, 10, Items.lead, 10)),
+                    new UnitPlan(UnitTypes.crawler, 60f * 10, with(Items.silicon, 8, Items.coal, 10)),
+                    new UnitPlan(UnitTypes.nova, 60f * 40, with(Items.silicon, 30, Items.lead, 20, Items.titanium, 20))
+            );
+            size = 3;
+            consumePower(1.2f);
+            researchCostMultiplier = 0.5f;
+
+            itemCapacity = 1000;
+            scaledHealth = 55;
+
+            coreMerge = true;
+
         }};
         perseverance = new BuildTurretRegenGeneratorCoreBlock("perseverance"){{
             requirements(Category.effect, with(Items.copper, 15));
