@@ -6,6 +6,7 @@ import mindustry.graphics.Pal;
 import mindustry.graphics.g3d.HexSkyMesh;
 import mindustry.graphics.g3d.MultiMesh;
 import mindustry.graphics.g3d.NoiseMesh;
+import mindustry.maps.planet.SerpuloPlanetGenerator;
 import mindustry.type.Planet;
 
 public class Planets {
@@ -27,6 +28,7 @@ public class Planets {
                     new HexSkyMesh(this, 11, 0.15f, 0.13f, 5, Color.white.a(0.75f), 2, 0.45f, 0.9f, 0.38f),
                     new HexSkyMesh(this, 1, 0.6f, 0.16f, 5, Color.white.a(0.75f), 2, 0.45f, 1f, 0.41f)
             );
+            generator = new SerpuloPlanetGenerator() ;
             launchCapacityMultiplier = 0.5f;
             sectorSeed = 2;
             allowWaves = true;
@@ -37,7 +39,7 @@ public class Planets {
             prebuildBase = true;
             allowLaunchSchematics = false;
             clearSectorOnLose = true;
-            defaultCore = trsBlocks.perseverance;
+            defaultCore = trsBlocks.Case;
             ruleSetter = r -> {
                 r.waveTeam = Team.malis;
                 r.placeRangeCheck = false;
@@ -53,7 +55,7 @@ public class Planets {
             alwaysUnlocked = true;
             landCloudColor = Pal.spore.cpy().a(0.5f);
 
-            unlockedOnLand.add(trsBlocks.perseverance);
+            unlockedOnLand.add(trsBlocks.Case);
         }};
     }
 }

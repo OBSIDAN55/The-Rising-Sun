@@ -9,7 +9,8 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Time;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 import mindustry.entities.Units;
 import mindustry.gen.Unit;
 import mindustry.graphics.Pal;
@@ -35,6 +36,15 @@ public class TRSItemTurret extends ItemTurret {
     public String fraction;
     @Nullable public String fractionDescription;
 
+    private static final Map<String, String> FRACTION_NAMES = new HashMap<>();
+
+    static {
+        FRACTION_NAMES.put("Chronos", Vars.ChronosName);
+        FRACTION_NAMES.put("Arch", Vars.ArchName);
+        FRACTION_NAMES.put("Akronix", Vars.AkronixName);
+        FRACTION_NAMES.put("Phoenix", Vars.PhoenixName);
+    }
+
     public TRSItemTurret(String name) {
         super(name);
     }
@@ -58,17 +68,8 @@ public class TRSItemTurret extends ItemTurret {
             stats.add(Vars.heatRange, heatRange/tilesize, StatUnit.blocks);
             stats.add(Vars.heatDamage, heatDamage, StatUnit.perSecond);
         }
-        if (Objects.equals(fraction, "Chronos")) {
-            this.stats.add(Vars.fractionName, Vars.ChronosName);
-        } else if (Objects.equals(fraction, "Arch")) {
-            this.stats.add(Vars.fractionName, Vars.ArchName);
-        } else if (Objects.equals(fraction, "Akronix")) {
-            this.stats.add(Vars.fractionName, Vars.AkronixName);
-        } else if (Objects.equals(fraction, "Phoenix")) {
-            this.stats.add(Vars.fractionName, Vars.PhoenixName);
-        } else {
-            this.stats.add(Vars.fractionName, fraction);
-        }
+        String name = FRACTION_NAMES.getOrDefault(fraction, fraction);
+        this.stats.add(Vars.fractionName, name);
     }
     public class TRSItemTurretBuild extends ItemTurretBuild{
         public float turretHeat;

@@ -1,5 +1,7 @@
 package trs.content;
 
+import static trs.type.TrsBulletTypes.*;
+
 import arc.graphics.Color;
 import arc.math.geom.Rect;
 import mindustry.content.Fx;
@@ -7,14 +9,14 @@ import mindustry.entities.abilities.ShieldArcAbility;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.part.HaloPart;
 import mindustry.entities.part.RegionPart;
+import mindustry.entities.pattern.ShootBarrel;
 import mindustry.gen.*;
 import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 import mindustry.type.unit.TankUnitType;
-import trs.type.HealthTrackingTankUnit;
-import trs.type.HealthTrackingTankUnitType;
-import trs.type.ShootAlternateSpread;
+import trs.type.construsctors.HealthTrackingTankUnit;
+import trs.type.construsctors.HealthTrackingTankUnitType;
 
 
 public class trsUnits {
@@ -73,7 +75,7 @@ public class trsUnits {
                             rotate = true;
                             mirror = false;
                             recoils = 2;
-                             shoot = new ShootAlternateSpread(15,10,4);
+                             //shoot = new ShootAlternateSpread(15,10,4);
                 inaccuracy = 0.2f;
                 velocityRnd = 0.17f;
                 shake = 1f;
@@ -238,114 +240,74 @@ public class trsUnits {
             crushDamage = 25f / 5f;
             rotateSpeed = 0.8f;
 
-            abilities.add(new ShieldArcAbility(){{
-                              region = "tecta-shield";
-                              radius = 36f;
-                              angle = 82f;
-                              regen = 0.6f;
-                              cooldown = 60f * 8f;
-                              max = 2000f;
-                              y = -15f;
-                              width = 6f;
-                              whenShooting = true;
-                          }}
-            );
-
             treadRects = new Rect[]{ new Rect(-62f, 3f, 32, 144),
                     new Rect(-103f, 44f, 34, 72),
                     new Rect(-100f, -119f, 30, 144)};
             weapons.add( new Weapon(name+"-weapon"){{
-                reload = 100f;
                 layerOffset = 0.1f;
                 mirror = false;
                 x = 0f;
                 y = 0f;
-                shootY = 5f;
+                shootY = 30f;
                 recoil = 2f;
-                minWarmup = 0.9f;
                 rotate = true;
                 rotateSpeed = 0.8f;
 
-                shootSound = Sounds.railgun;
+                shootSound = Sounds.mediumCannon;
+                targetAir = false;
+                shake = 4f;
+                reload = 60f * 2.3f;
+                minWarmup = 0.85f;
 
+                shootWarmupSpeed = 0.07f;
+                recoils = 2;
 
-                bullet = new BasicBulletType(60,20){{
-                    pierce = true;
-                    pierceCap = 3;
-                    drag=  0.01f;
-                    smokeEffect = Fx.shootBigSmoke;
-                    shootEffect = Fx.shootBigColor;
-                    width = 10;
-                    height = 60;
-                    lifetime = 10;
-                    hitSize = 4;
-                    trailWidth = 4f;
-                    trailLength = 13;
-                    despawnEffect = Fx.hitBulletColor;
-                    trailColor = backColor = frontColor = Color.cyan;
+                //shoot = new ShootAlternate(10f);
+
+                bullet = TerminationBaseBullet;
+                shoot = new ShootBarrel(){{
+                    barrels = new float[]{
+                            -8, 0, 0,
+                            8, 0, 0
+                    };
+                    shots = 2;
+                    shotDelay = 10f;
                 }};
-                for(int i = 1; i <= 3; i++){
-                    int fi = i;
-                    parts.add(new RegionPart("-blades-"+i){{
-                        progress = PartProgress.warmup.blend(PartProgress.recoil, 0.6f);
-                        heatColor = new Color(1f, 0.1f, 0.1f);
-                        mirror = true;
+                for(int i = 0; i < 2; i++) {
+                    int f = i;
+                    parts.add(new RegionPart("-trunk-" + (i==0 ? "l" : "r")) {{
+                        progress = PartProgress.recoil;
+                        recoilIndex = f;
                         under = true;
-                        moveY = -10f * fi/4f;
-                        moveX = -5f/4f;
-                        layerOffset = -0.002f;
-
+                        moveY = -8.5f;
                     }});
                 }
-                for(int i = 1; i <= 3; i++){
-                    int fi = i;
-                    parts.add(new RegionPart("-charge-"+i){{
-                        progress = PartProgress.warmup.delay((3 - fi) * 0.3f);
-                        heatColor = new Color(1f, 0.1f, 0.1f);
-                        mirror = true;
-                        under = true;
-                        moveX = -35f/4f+fi/1.3f;
-                        moveY = 13f/4f;
-                        moveRot = 30f;
-                        layerOffset = -0.002f;
+            }}, new Weapon(name+"-weapon2"){{
+                layerOffset = 0.01f;
+                mirror = false;
+                x = 0f;
+                y = 0f;
+                shootY = 30f;
+                recoil = 2f;
+                rotate = true;
+                rotateSpeed = 0.8f;
 
-                    }});
-                }
-                parts.addAll(new RegionPart("-top"){{
-                    mirror = false;
-                    progress = PartProgress.life;
-                    layerOffset = 0.00001f;
-                }},new HaloPart(){{
-                    tri = false;
-                    sides = 4;
-                    shapes = 8;
-                    shapeRotation = 45f;
+                shootSound = Sounds.mediumCannon;
+                targetAir = false;
+                shake = 4f;
+                reload = 380f;
+                minWarmup = 0.97f;
 
-                    haloRotateSpeed = 7f;
-                    hollow = true;
-                    mirror = false;
-                    progress = PartProgress.life;
-                    color = Color.cyan;
-                    radius = 0.4f;
-                    haloRadius = 3.5f;
-                    y = -7f;
-                    stroke = 1f;
-                }},new HaloPart(){{
-                    tri = false;
-                    sides = 4;
-                    shapes = 8;
-                    shapeRotation = 45f;
+                shootWarmupSpeed = 0.03f;
 
-                    haloRotateSpeed = 7f;
-                    hollow = true;
-                    mirror = false;
-                    progress = PartProgress.life;
-                    color = Color.cyan;
-                    radius = 0.4f;
-                    haloRadius = 4f;
-                    y = -7f;
-                    stroke = 1f;
+                parts.add(new RegionPart("-trunk-c") {{
+                    progress = PartProgress.recoil;
+                    under = true;
+                    moveY = -8.5f;
                 }});
+
+                bullet = ExacrimExplosionBulletType;
+
             }});
         }};
     }

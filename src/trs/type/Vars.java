@@ -1,14 +1,11 @@
 package trs.type;
 
 import arc.Core;
-import arc.assets.Loadable;
-import mindustry.ai.*;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatCat;
 
 
-
-public class Vars extends mindustry.Vars implements Loadable {
+public class Vars {
 
     public static String ChronosName;
     public static String ArchName;
@@ -28,9 +25,22 @@ public class Vars extends mindustry.Vars implements Loadable {
     public static Stat heatDamage;
     public static Stat powerUsePhase;
 
-    public static void load() {
-        loadSettings();
+    public static Stat basePowerRange;
+    public static Stat basePowerConnections;
+    public static Stat farPowerRange;
+    public static Stat farPowerConnections;
+    public static Stat farModePowerGeneration;
+    public static Stat closePowerRange;
+    public static Stat closePowerConnections;
 
+    public static StatCat baseMode;
+    public static StatCat farMode;
+    public static StatCat closeMode;
+
+
+
+
+    public static void load() {
         ChronosName = Core.bundle.get("ChronosName");
         ArchName = Core.bundle.get("ArchName");
         AkronixName = Core.bundle.get("AkronixName");
@@ -48,6 +58,24 @@ public class Vars extends mindustry.Vars implements Loadable {
         heatRange = new Stat("heatrange", StatCat.function);
         heatDamage = new Stat("heatdamage",StatCat.function);
         powerUsePhase = new Stat("powerusephase",StatCat.power);
-    }
 
+
+
+
+
+        baseMode = new StatCat("baseMode");
+        basePowerRange = new Stat("basePowerRange", baseMode);
+        basePowerConnections = new Stat("basePowerConnections", baseMode);
+
+        farMode = new StatCat("farMode");
+        farPowerRange = new Stat("farPowerRange", farMode);
+        farPowerConnections = new Stat("farPowerConnections", farMode);
+        farModePowerGeneration = new Stat("farModePowerGeneration", farMode);
+
+        closeMode = new StatCat("closeMode");
+        closePowerRange = new Stat("closePowerRange", closeMode);
+        closePowerConnections = new Stat("closePowerConnections", closeMode);
+
+
+    }
 }

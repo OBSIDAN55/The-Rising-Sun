@@ -5,17 +5,28 @@ import static mindustry.type.ItemStack.with;
 import arc.graphics.Color;
 import arc.struct.Seq;
 import mindustry.content.*;
-import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.bullet.*;
+import mindustry.entities.bullet.ContinuousFlameBulletType;
 import mindustry.entities.pattern.ShootAlternate;
+import mindustry.entities.pattern.ShootBarrel;
+import mindustry.gen.Sounds;
 import mindustry.graphics.Pal;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
+import mindustry.type.LiquidStack;
+import mindustry.type.PayloadStack;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.Wall;
+import mindustry.world.blocks.defense.turrets.ContinuousLiquidTurret;
+import mindustry.world.blocks.defense.turrets.ItemTurret;
+import mindustry.world.blocks.payloads.Constructor;
+import mindustry.world.blocks.payloads.PayloadConveyor;
+import mindustry.world.blocks.payloads.PayloadRouter;
 import mindustry.world.blocks.power.ConsumeGenerator;
 import mindustry.world.blocks.production.Drill;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.draw.*;
+import mindustry.world.meta.BuildVisibility;
 import mindustry.world.meta.Env;
 import trs.multicraft.IOEntry;
 import trs.multicraft.MultiCrafter;
@@ -23,18 +34,22 @@ import trs.multicraft.Recipe;
 import trs.type.*;
 import trs.type.Draw.RandomDrawGlowRegion;
 import trs.type.Drills.ClusterDrill;
-import trs.type.Drills.MultiBlockDrill;
-import trs.type.defense.turrets.CountForceProjector;
 import trs.type.defense.turrets.TRSItemTurret;
 import trs.type.distribution.*;
+import trs.type.power.LargeVariableNode;
+import trs.type.power.VariableNode;
+import trs.type.test.TestGenericCrafter;
+import trs.type.units.AnimatedUnitAssembler;
 
 public class trsBlocks {
     public static Block
     //cores
             Case,incedent,Signal,
             perseverance,fortitude,stability,a,b,c,
+    //fractions
+    acronyx,arha,hronos,phoenix,
     //prod
-            bariumLightSource,rubidiumSmelter,melter,crusher,atmosphericCondenser,carbonGlassClin,test,brazier,
+            rubidiumSmelter,melter,crusher,atmosphericCondenser,carbonGlassClin,test,brazier,
     //distribution
             clinovalveDuct,
             clinovalveJunction,
@@ -49,11 +64,31 @@ public class trsBlocks {
     //drills
             hydraulicDrill,deepDrill,clusterDrill,hui,huiPart,
     //turrets
-        splash, artery, wire,
+        splash,artery, wire,ash,lucidity,hallucination,
     //power
-        carbonBiomassReactor;
+        variableNode, largeVariableNode,carbonBiomassReactor,
+    //units parts
+        componentsFactory,clinovalvePayloadRouter,clinovalvePayloadConveyor,universalCollectorUnits,
+        detailBody, exacrimCatalyst,modularTrunk,shockMechanism,skeleton,
+    //effect
+        bariumLightSource, alarmSystem,
+
+
+    //test
+    testGen;
+    
+    // Массив для хранения 256 colider блоков
+    public static Block[] coliderBlocks = new Block[256];
+    
+
 
     public static void load(){
+        acronyx = new Block("acronyx");
+        arha = new Block("arha");
+        hronos = new Block("hronos");
+        phoenix = new Block("phoenix");
+
+        /**
         c = new CountForceProjector("shield"){{
             requirements(Category.effect, with(Items.copper,1));
             size = 3;
@@ -79,6 +114,7 @@ public class trsBlocks {
            consumeLiquid(Liquids.water, 1f);
            rotate = true;
         }};
+         **/
         Case = new BuildTurretRegenGeneratorCoreBlock("case"){{
             requirements(Category.effect, with(Items.copper, 15));
             outlineColor = Color.valueOf("00000000");
@@ -254,6 +290,21 @@ public class trsBlocks {
             radius = 140f;
             sourceLightColor = Color.valueOf("96037c");
         }};
+        alarmSystem = new GenericCrafter("alarm-system"){{
+            requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
+            size = 2;
+            drawer = new DrawMulti(new DrawDefault(), new DrawGlowRegion(){{
+                suffix = "-rotator";
+                color = Color.red;
+                rotate = true;
+                rotateSpeed = 3f;
+            }});
+
+            ambientSound = trs.Sounds.alarm;
+            ambientSoundVolume = 10000;
+            buildVisibility = BuildVisibility.editorOnly;
+
+        }};
         rubidiumSmelter = new GenericCrafter("rubidium-smelter"){{
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
             size = 4;
@@ -376,7 +427,6 @@ public class trsBlocks {
                 color = Color.valueOf("56bff1");
             }});
         }};
-        /**
         crusher = new MultiCrafter("crusher"){{
             requirements(Category.crafting, with(Items.graphite, 12, Items.silicon, 8, Items.lead, 8));
             squareSprite = false;
@@ -458,7 +508,6 @@ public class trsBlocks {
                 );
 
         }};
-         **/
         clinovalveDuct = new ItemLiquidDuct("clinovalve-duct"){{
             requirements(Category.distribution, with(Items.copper, 1));
             speed = 4f;
@@ -540,6 +589,7 @@ public class trsBlocks {
             tier = 4;
             consumeCoolant(0.05f);
         }};
+        /**
         hui = new MultiBlockDrill("hui-drill"){{
             requirements(Category.production, with(Items.lead, 2, Items.copper, 4));
             size = 4;
@@ -549,7 +599,7 @@ public class trsBlocks {
             requirements(Category.production, with(Items.lead, 2, Items.copper, 4));
             size = 2;
             customShadow = true;
-        }};
+        }};**/
         //walls
 
         clinovalveWall = new Wall("clinovalve-wall"){{
@@ -589,7 +639,169 @@ public class trsBlocks {
             size = 3;
         }};
 
+        //units parts
+
+        detailBody = new Wall("detail-body"){{
+            requirements(Category.units, with(Items.lead, 2, Items.copper, 4));
+            size = 2;
+            hideDatabase = true;
+            buildVisibility = BuildVisibility.sandboxOnly;
+        }};
+        skeleton = new Wall("skeleton"){{
+            requirements(Category.units, with(Items.lead, 2, Items.copper, 4));
+            size = 2;
+            hideDatabase = true;
+            buildVisibility = BuildVisibility.sandboxOnly;
+        }};
+        shockMechanism = new Wall("shock-mechanism"){{
+            requirements(Category.units, with(Items.lead, 2, Items.copper, 4));
+            size = 2;
+            hideDatabase = true;
+            buildVisibility = BuildVisibility.sandboxOnly;
+        }};
+        modularTrunk = new Wall("modular-trunk-tank"){{
+            requirements(Category.units, with(Items.lead, 2, Items.copper, 4));
+            size = 2;
+            hideDatabase = true;
+            buildVisibility = BuildVisibility.sandboxOnly;
+        }};
+        exacrimCatalyst = new Wall("exacrim-catalyst"){{
+            requirements(Category.units, with(Items.lead, 2, Items.copper, 4));
+            size = 2;
+            hideDatabase = true;
+            buildVisibility = BuildVisibility.sandboxOnly;
+        }};
+
+        componentsFactory = new Constructor("components-factory"){{
+            requirements(Category.units, with(Items.lead, 2, Items.copper, 4));
+            size = 2;
+            hasPower = true;
+            buildSpeed = 0.6f;
+            consumePower(2.5f);
+            filter = Seq.with(trsBlocks.detailBody);
+        }};
+
+        clinovalvePayloadConveyor = new PayloadConveyor("reinforced-clinovalve-conveyor"){{
+            requirements(Category.units, with(Items.graphite, 10, Items.copper, 10));
+            canOverdrive = false;
+            size = 2;
+        }};
+
+        clinovalvePayloadRouter = new PayloadRouter("reinforced-clinovalve-router"){{
+            requirements(Category.units, with(Items.graphite, 15, Items.copper, 10));
+            canOverdrive = false;
+            size = 2;
+        }};
+        testGen = new TestGenericCrafter("test-gen"){{
+            requirements(Category.crafting, with(Items.graphite, 15, Items.copper, 10));
+        }};
+        universalCollectorUnits = new AnimatedUnitAssembler("universal-collector-units"){{
+            requirements(Category.units, with(Items.graphite, 15, Items.copper, 10));
+            size = 6;
+            plans.add(
+                    new AssemblerUnitPlan(trsUnits.apocalypse, 60f * 60f, PayloadStack.list(trsBlocks.detailBody, 20, trsBlocks.shockMechanism,8, trsBlocks.modularTrunk, 3,trsBlocks.exacrimCatalyst,3,trsBlocks.steelWallLarge,15)),
+                    new AssemblerUnitPlan(trsUnits.disaster, 60f * 95, PayloadStack.list(trsBlocks.detailBody, 17, trsBlocks.shockMechanism,6, trsBlocks.modularTrunk, 2,trsBlocks.exacrimCatalyst,2,trsBlocks.steelWallLarge,10))
+            );
+            areaSize = 13;
+
+            consumePower(3f);
+            consumeLiquid(Liquids.cyanogen, 12f / 60f);
+            
+             // Настройки анимации манипуляторов
+             manipulatorCount = 4;
+             manipulatorSpeed = 0.1f;
+             manipulatorRadius = 3f;
+             weldingTime = 2f;
+             weldingColor = Color.orange;
+
+        }};
+
+
+
         //turrets
+        //phoenix
+        ash = new ContinuousLiquidTurret("ash"){{
+                requirements(Category.turret, with(Items.copper, 1));
+                size = 4;
+                float r = range = 130f;
+                ammo(
+                        trsLiquids.metan, new ContinuousFlameBulletType(){{
+                            damage = 130f;
+                            rangeChange = 70f;
+                            ammoMultiplier = 1.5f;
+                            length = r + rangeChange;
+                            knockback = 2f;
+                            pierceCap = 3;
+                            buildingDamageMultiplier = 0.3f;
+                            timescaleDamage = true;
+                            width = 5f;
+
+                            colors = new Color[]{Color.valueOf("#1E90FF").a(0.55f), Color.valueOf("#87CEFA").a(0.7f), Color.valueOf("#ADD8E6").a(0.8f), Color.valueOf("#B0C4DE"), Color.white};
+                            drawFlare = false;
+                            lightColor = hitColor = flareColor;
+                        }}
+                );
+                recoil = 0.5f;
+                reload = 6;
+                coolantMultiplier = 1.5f;
+                shootY = 0;
+                health = 400;
+                minWarmup = 0.9f;
+                ammoUseEffect = Fx.lightningShoot;
+            }};
+        //akronix
+        lucidity = new ItemTurret("lucidity"){{
+            requirements(Category.turret, with(Items.copper, 1));
+            size = 4;
+            inaccuracy = 2;
+            shootSound = Sounds.respawn;
+
+            ammo(
+                    trsItems.steel, new BasicBulletType(13f,100){{
+                        drag = 0.04f;
+                        reload = 100f;
+                        width = 6f;
+                        trailLength = 10;
+                        weaveScale = 8f;
+                        weaveMag = 1f;
+
+
+                        frontColor = backColor = trailColor = Color.valueOf("D8CAE2FF");
+                        shoot = new ShootBarrel(){{
+                            barrels = new float[]{
+                                    -6, 0, 0,
+                                    6, 0, 0
+                            };
+                            shots = 6;
+                            shotDelay = 4f;
+                        }};
+                        fragBullets = 7;
+                        fragAngle = 360;
+                        delayFrags = true;
+                        intervalDelay = 18f;
+                        fragBullet = new LaserBulletType(){{
+                            colors = new Color[]{Color.valueOf("D8CAE2FF"), Color.valueOf("D8CAE2FF")};
+                            length = 50f;
+                            width = 10f;
+                            despawnSound = hitSound = Sounds.malignShoot;
+                        }};
+                    }}
+            );
+            //arch
+            hallucination = new ItemTurret("hallucination"){{
+               requirements(Category.turret, with(Items.copper, 1));
+               size = 6;
+               ammo(
+                       Items.copper, new BasicBulletType(7,0,"circle"){{
+                           drag = 0.04f;
+                           reload = 100f;
+                           width = 20;
+                           height = 20;
+                       }}
+               );
+            }};
+
+        }};
         splash = new TRSItemTurret("splash"){{
             requirements(Category.turret, with(Items.copper,1));
             isHeating = true;
@@ -653,6 +865,23 @@ public class trsBlocks {
             limitRange();
         }};
         //power
+        variableNode = new VariableNode("variable-node"){{
+            requirements(Category.power, with(Items.graphite, 15, Items.copper, 10));
+            baseLaserRange = 12;
+            baseMaxNodes = 16;
+            farLaserRange = 50;
+            farMaxNodes = 3;
+            closeLaserRange = 6;
+        }};
+        largeVariableNode = new LargeVariableNode("large-variable-node"){{
+            requirements(Category.power, with(Items.graphite, 15, Items.copper, 10));
+            baseLaserRange = 12;
+            baseMaxNodes = 16;
+            farLaserRange = 50;
+            farMaxNodes = 3;
+            closeLaserRange = 6;
+            size = 2;
+        }};
         carbonBiomassReactor = new ConsumeGenerator("carbon-biomass-reactor"){{
             requirements(Category.turret, with(Items.copper,1));
             size = 5;
@@ -669,8 +898,14 @@ public class trsBlocks {
                 spread = 10f;
             }},new DrawDefault());
         }};
-        wire = new PowerZone("wire"){{
-            requirements(Category.turret, with(Items.copper,1));
-        }};
+        
+        // Создание 256 colider блоков с названиями colider-0000001 до colider-0000256
+        for(int i = 0; i < 256; i++){
+            String blockName = String.format("colider-%07d", i + 1);
+            coliderBlocks[i] = new GenericCrafter(blockName){{
+                requirements(Category.effect, with(Items.graphite, 15, Items.copper, 10));
+                size = 1;
+            }};
+        }
     }
 }
