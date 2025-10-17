@@ -6,10 +6,8 @@ import trs.type.TrsBulletTypes;
 import trs.type.Vars;
 
 public class trsMod extends Mod {
-    public trsMod(){
-    }
+    public trsMod(){}
     public void loadContent(){
-        //if (OS.isAndroid){ System.exit(0);}
         Vars.load();
         Sounds.load();
         trsStatusEffects.load();

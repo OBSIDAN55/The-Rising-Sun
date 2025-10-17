@@ -1,5 +1,8 @@
 package trs.type.cores;
 
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Angles;
 import arc.math.Mathf;
 import arc.struct.EnumSet;
 import arc.struct.Seq;
@@ -9,9 +12,11 @@ import arc.util.io.Writes;
 import java.lang.reflect.Field;
 import mindustry.Vars;
 import mindustry.content.Fx;
+import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
+import mindustry.graphics.Pal;
 import mindustry.logic.LAccess;
 import mindustry.type.Item;
 import mindustry.type.UnitType;
@@ -25,6 +30,8 @@ import mindustry.world.meta.Env;
 
 public class CoreLinkVaultUnitFactory extends UnitFactory {
     public boolean coreMerge = true;
+    public TextureRegion linkRegion;
+    public TextureRegion linkDarkRegion;
 
     public CoreLinkVaultUnitFactory(String name) {
         super(name);
@@ -38,6 +45,95 @@ public class CoreLinkVaultUnitFactory extends UnitFactory {
         flags = EnumSet.of(BlockFlag.storage);
         allowResupply = true;
         envEnabled = Env.any;
+        rotate = false;
+    }
+
+    @Override
+    public void load(){
+        super.load();
+        linkRegion = arc.Core.atlas.find(name + "-link");
+        linkDarkRegion = arc.Core.atlas.find(name + "-link-dark");
+    }
+
+    @Override
+    public boolean canPlaceOn(Tile tile, Team team, int rotation){
+        // Проверяем, что на карте еще нет фабрик этого типа
+        boolean hasExisting = false;
+        for(Building b : Groups.build){
+            if(b.block == this && b.team == team){
+                hasExisting = true;
+                break;
+            }
+        }
+        if(hasExisting) return false;
+        
+        // Проверяем, что фабрика находится на прямой линии от ядра
+        Building core = team.core();
+        if(core == null) return super.canPlaceOn(tile, team, rotation);
+        
+        // Учитываем размеры ядра и фабрики
+        int coreSize = core.block.size;
+        int factorySize = this.size;
+        
+        // Проверяем выравнивание по осям (горизонтально или вертикально)
+        boolean aligned = (tile.x == core.tile.x) || (tile.y == core.tile.y);
+        if(!aligned) return false;
+        
+        // Проверяем, что фабрика стоит вплотную к ядру с учетом размеров
+        int dx = Math.abs(tile.x - core.tile.x);
+        int dy = Math.abs(tile.y - core.tile.y);
+        
+        // Расстояние между центрами блоков для вплотную стоящих блоков
+        boolean adjacent = (dx == (coreSize + factorySize) / 2 && dy == 0) || 
+                          (dx == 0 && dy == (coreSize + factorySize) / 2);
+        
+        return adjacent && super.canPlaceOn(tile, team, rotation);
+    }
+
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+        
+        // Проверяем, что на карте еще нет фабрик этого типа
+        boolean hasExisting = false;
+        for(Building b : Groups.build){
+            if(b.block == this && b.team == Vars.player.team()){
+                hasExisting = true;
+                break;
+            }
+        }
+        if(hasExisting){
+            Draw.color(Pal.remove);
+            Draw.rect("block-select", x * 8f, y * 8f, 0f);
+            Draw.color();
+            return;
+        }
+        
+        // Проверяем выравнивание с ядром и расстояние с учетом размеров
+        Building core = Vars.player.team().core();
+        if(core != null){
+            boolean aligned = (x == core.tile.x) || (y == core.tile.y);
+            if(!aligned){
+                Draw.color(Pal.remove);
+                Draw.rect("block-select", x * 8f, y * 8f, 0f);
+                Draw.color();
+                return;
+            }
+            
+            int coreSize = core.block.size;
+            int factorySize = this.size;
+            int dx = Math.abs(x - core.tile.x);
+            int dy = Math.abs(y - core.tile.y);
+            
+            boolean adjacent = (dx == (coreSize + factorySize) / 2 && dy == 0) || 
+                              (dx == 0 && dy == (coreSize + factorySize) / 2);
+            
+            if(!adjacent){
+                Draw.color(Pal.remove);
+                Draw.rect("block-select", x * 8f, y * 8f, 0f);
+                Draw.color();
+            }
+        }
     }
 
     public static void incinerateEffect(Building self, Building source){
@@ -208,6 +304,19 @@ public class CoreLinkVaultUnitFactory extends UnitFactory {
         public void drawSelect(){
             if(linkedCore != null){
                 linkedCore.drawSelect();
+            }
+        }
+
+        @Override
+        public void draw(){
+            super.draw();
+            if(linkedCore instanceof CoreBlock.CoreBuild core){
+                boolean bright = x >= core.x && y >= core.y;
+                TextureRegion reg = bright ? linkRegion : linkDarkRegion;
+                if(reg != null){
+                    float ang = Angles.angle(x, y, core.x, core.y);
+                    Draw.rect(reg, x, y, ang);
+                }
             }
         }
 

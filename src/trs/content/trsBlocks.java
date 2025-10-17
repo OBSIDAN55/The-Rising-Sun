@@ -141,11 +141,6 @@ public class trsBlocks {
             isGenerator = false;
 
             squareSprite = false;
-
-
-            drawer = new DrawRegion("-r"){{
-                layer = 29.99f;
-            }};
         }};
 
         cellFactory = new CoreLinkVaultUnitFactory("cell-fabricator"){{
