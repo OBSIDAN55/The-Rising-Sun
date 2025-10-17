@@ -151,9 +151,9 @@ public class trsBlocks {
         cellFactory = new CoreLinkVaultUnitFactory("cell-fabricator"){{
             requirements(Category.effect, with(Items.copper, 15));
             plans = Seq.with(
-                    new UnitPlan(UnitTypes.dagger, 60f * 15, with(Items.silicon, 10, Items.lead, 10)),
-                    new UnitPlan(UnitTypes.crawler, 60f * 10, with(Items.silicon, 8, Items.coal, 10)),
-                    new UnitPlan(UnitTypes.nova, 60f * 40, with(Items.silicon, 30, Items.lead, 20, Items.titanium, 20))
+                    new UnitPlan(UnitTypes.dagger, 60f * 2, with(Items.silicon, 10, Items.lead, 10)),
+                    new UnitPlan(UnitTypes.crawler, 60f * 2, with(Items.silicon, 8, Items.coal, 10)),
+                    new UnitPlan(UnitTypes.nova, 60f * 2, with(Items.silicon, 30, Items.lead, 20, Items.titanium, 20))
             );
             size = 3;
             consumePower(1.2f);
@@ -163,6 +163,8 @@ public class trsBlocks {
             scaledHealth = 55;
 
             coreMerge = true;
+
+
 
         }};
         perseverance = new BuildTurretRegenGeneratorCoreBlock("perseverance"){{

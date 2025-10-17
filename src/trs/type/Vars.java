@@ -76,6 +76,5 @@ public class Vars {
         closePowerRange = new Stat("closePowerRange", closeMode);
         closePowerConnections = new Stat("closePowerConnections", closeMode);
 
-
     }
 }

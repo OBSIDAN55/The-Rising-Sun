@@ -33,10 +33,12 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.ConstructBlock;
 import mindustry.world.blocks.ControlBlock;
 import mindustry.world.blocks.storage.CoreBlock;
+import mindustry.world.blocks.storage.StorageBlock;
 import mindustry.world.consumers.ConsumeItems;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.draw.DrawDefault;
 import mindustry.world.meta.*;
+import mindustry.world.meta.BlockFlag;
 
 public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
 
@@ -228,6 +230,17 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
 
         {
             unit.rotation(90f);
+        }
+
+        @Override
+        public boolean owns(Building tile){
+            return owns(this, tile);
+        }
+
+        @Override
+        public boolean owns(Building core, Building tile){
+            // ядро «владеет» только реальными хранилищами, чтобы последующий каст к StorageBuild был корректным
+            return tile instanceof StorageBlock.StorageBuild sb && sb.block.flags.contains(BlockFlag.storage);
         }
 
         @Override
@@ -449,6 +462,28 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
                 core.proximity.each(storage -> storage.items == items, outline);
             });
             Draw.reset();
+        }
+
+        @Override
+        public void onProximityUpdate(){
+            // Безопасно вызываем базовую логику ядра; игнорируем ClassCast, который может возникать при попытке кастовать нестандартные «хранилища»
+            try{
+                super.onProximityUpdate();
+            }catch(ClassCastException ignored){
+                // пропускаем падение, продолжим своей логикой
+            }
+
+            // Линкуем рядом стоящие CoreLinkVaultUnitFactory как «хранилище ядра», без шаринга items-модуля
+            if(proximity != null){
+                for(Building other : proximity){
+                    if(other instanceof CoreLinkVaultUnitFactory.CoreLinkVaultUnitFactoryBuild b){
+                        CoreLinkVaultUnitFactory block = (CoreLinkVaultUnitFactory)b.block;
+                        if(block.coreMerge && (b.linkedCore == null || b.linkedCore == this)){
+                            b.linkedCore = this;
+                        }
+                    }
+                }
+            }
         }
 
         @Override
