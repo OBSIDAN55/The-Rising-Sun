@@ -8,6 +8,8 @@ import trs.type.Vars;
 public class trsMod extends Mod {
     public trsMod(){}
     public void loadContent(){
+        mindustry.Vars.maxTextureSize = 2048*10;
+        mindustry.Vars.maxSchematicSize = 13000;
         Vars.load();
         Sounds.load();
         trsStatusEffects.load();

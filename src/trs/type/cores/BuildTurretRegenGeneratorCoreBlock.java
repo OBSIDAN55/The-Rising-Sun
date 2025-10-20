@@ -103,10 +103,6 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
 
     @Override
     public void init(){
-        if (!isGenerator){
-            powerProduction = 0f;
-            hasPower = false;
-        }
         placeOverlapRange = Math.max(placeOverlapRange, range + placeOverlapMargin);
         fogRadius = Math.max(Mathf.round(range / tilesize * fogRadiusMultiplier), fogRadius);
         lightRadius = 30f + 20f * size;
@@ -302,6 +298,7 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
 
             warmup = Mathf.lerpDelta(warmup, unit.activelyBuilding() ? efficiency : 0f, 0.1f);
 
+
             if (!isControlled()) {
                 unit.updateBuilding(true);
 
@@ -493,7 +490,7 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
 
         @Override
         public float warmup() {
-            return enabled ? productionEfficiency : 10f;
+            return enabled ? powerProduction * productionEfficiency :10f;
         }
 
         @Override
@@ -514,15 +511,16 @@ public class BuildTurretRegenGeneratorCoreBlock extends CoreBlock{
 
         @Override
         public float getPowerProduction() {
-            if(isGenerator) {
                 return enabled ? powerProduction * productionEfficiency : 10f;
-            }else return 0;
         }
 
         @Override
         public byte version() {
             return 1;
         }
+
+
+        
 
     }
 }

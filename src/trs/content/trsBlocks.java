@@ -4,6 +4,7 @@ import static mindustry.type.ItemStack.with;
 
 import arc.graphics.Color;
 import arc.struct.Seq;
+import arc.util.OS;
 import mindustry.content.*;
 import mindustry.entities.bullet.*;
 import mindustry.entities.bullet.ContinuousFlameBulletType;
@@ -37,6 +38,7 @@ import trs.type.Drills.ClusterDrill;
 import trs.type.cores.BuildTurretRegenGeneratorCoreBlock;
 import trs.type.cores.CoreLinkVaultUnitFactory;
 import trs.type.defense.turrets.TRSItemTurret;
+import trs.type.defense.walls.ExacrimWall;
 import trs.type.distribution.*;
 import trs.type.power.LargeVariableNode;
 import trs.type.power.VariableNode;
@@ -47,7 +49,7 @@ public class trsBlocks {
     public static Block
     //cores
             Case,incedent,Signal,
-            perseverance,fortitude,stability,a,b,c,
+            perseverance,fortitude,stability,a,b,c,col,
             cellFactory,
     //fractions
     acronyx,arha,hronos,phoenix,
@@ -69,7 +71,7 @@ public class trsBlocks {
     //turrets
         splash,artery, wire,ash,lucidity,hallucination,
     //power
-        variableNode, largeVariableNode,carbonBiomassReactor,
+        variableNode,largeVariableNode,carbonBiomassReactor,
     //units parts
         componentsFactory,clinovalvePayloadRouter,clinovalvePayloadConveyor,universalCollectorUnits,
         detailBody, exacrimCatalyst,modularTrunk,shockMechanism,skeleton,
@@ -78,7 +80,7 @@ public class trsBlocks {
 
 
     //test
-    testGen;
+    testGen,testNode;
     
     // Массив для хранения 256 colider блоков
     public static Block[] coliderBlocks = new Block[256];
@@ -90,6 +92,7 @@ public class trsBlocks {
         arha = new Block("arha");
         hronos = new Block("hronos");
         phoenix = new Block("phoenix");
+
 
         /**
         c = new CountForceProjector("shield"){{
@@ -137,10 +140,12 @@ public class trsBlocks {
             incinerateNonBuildable = false;
             isFirstTier = true;
             size = 3;
-            isRegen = false;
-            isGenerator = false;
-
+            isRegen = true;
+            isGenerator = true;
+            consumePowerBuffered(4000f);
             squareSprite = false;
+
+
         }};
 
         cellFactory = new CoreLinkVaultUnitFactory("cell-fabricator"){{
@@ -225,6 +230,7 @@ public class trsBlocks {
             researchCostMultiplier = 0.07f;
             powerProduction = 10f;
             squareSprite = false;
+
 
 
             drawer = new DrawMulti(
@@ -649,9 +655,10 @@ public class trsBlocks {
             requirements(Category.defense, with(Items.lead, 2, Items.copper, 4));
             size = 2;
         }};
-        exacrimWall = new Wall("exacrim-wall"){{
+        exacrimWall = new ExacrimWall("exacrim-wall"){{
             requirements(Category.defense, with(Items.lead, 2, Items.copper, 4));
             size = 2;
+            drawer = new DrawRegion("-glow",1);
         }};
         exacrimWallLarge = new Wall("exacrim-wall-large"){{
             requirements(Category.defense, with(Items.lead, 2, Items.copper, 4));
@@ -883,6 +890,7 @@ public class trsBlocks {
 
             limitRange();
         }};
+
         //power
         variableNode = new VariableNode("variable-node"){{
             requirements(Category.power, with(Items.graphite, 15, Items.copper, 10));
@@ -917,14 +925,17 @@ public class trsBlocks {
                 spread = 10f;
             }},new DrawDefault());
         }};
-        
-        // Создание 256 colider блоков с названиями colider-0000001 до colider-0000256
-        for(int i = 0; i < 256; i++){
-            String blockName = String.format("colider-%07d", i + 1);
-            coliderBlocks[i] = new GenericCrafter(blockName){{
-                requirements(Category.effect, with(Items.graphite, 15, Items.copper, 10));
-                size = 1;
-            }};
+
+        if (OS.isWindows) {
+            // Создание 256 colider блоков с названиями colider-0000001 до colider-0000256
+            for (int i = 0; i < 256; i++) {
+                String blockName = String.format("colider-%07d", i + 1);
+                coliderBlocks[i] = new GenericCrafter(blockName) {{
+                    requirements(Category.effect, with(Items.graphite, 15, Items.copper, 10));
+                    size = 16;
+                    hideDatabase = true;
+                }};
+            }
         }
     }
 }
