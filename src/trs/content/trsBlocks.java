@@ -658,11 +658,22 @@ public class trsBlocks {
         exacrimWall = new ExacrimWall("exacrim-wall"){{
             requirements(Category.defense, with(Items.lead, 2, Items.copper, 4));
             size = 2;
-            drawer = new DrawRegion("-glow",1);
+            drawer = new DrawMulti(new DrawDefault(), new DrawGlowRegion("-glow"){{
+                color = Color.cyan;
+                alpha = 0.8F;
+                glowScale = 10F;
+                glowIntensity = 0.7F;
+            }});
         }};
-        exacrimWallLarge = new Wall("exacrim-wall-large"){{
+        exacrimWallLarge = new ExacrimWall("exacrim-wall-large"){{
             requirements(Category.defense, with(Items.lead, 2, Items.copper, 4));
             size = 3;
+            drawer = new DrawMulti(new DrawDefault(), new DrawGlowRegion("-glow"){{
+                color = Color.cyan;
+                alpha = 0.8F;
+                glowScale = 9F;
+                glowIntensity = 0.7F;
+            }});
         }};
 
         //units parts
